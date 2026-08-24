@@ -113,8 +113,15 @@ class Metadata(ABC):
         if b_has and len(l) > 0:
             b_has = False
 
-            metadata = self.metadata[k]
-            if isinstance(metadata, list):
+            metadata_values = self.metadata[k]
+            if isinstance(metadata_values, list):
+                if k == "tags":
+                    metadata = []
+                    for key in metadata_values:
+                        metadata.extend(key.split("/"))
+                else:
+                    metadata = metadata_values
+
                 b_has = all(val in metadata for val in l)
 
         return b_has
