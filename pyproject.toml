@@ -1,30 +1,43 @@
-[tool.poetry]
+[project]
 name = "py-obsidianmd"
 version = "0.2.0"
 description = "python library for ObsidianMD"
-authors = ["Selim Raboudi <selim.raboudi@gmail.com>"]
-license = "MIT"
+authors = [{ name = "Selim Raboudi", email = "selim.raboudi@gmail.com" }]
+requires-python = ">=3.10,<4"
 readme = "README.md"
-repository = "https://github.com/selimrbd/py-obsidianmd"
-packages = [
-    { include = "pyomd" }
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = ["python-frontmatter>=1.0.0,<2"]
+
+[project.urls]
+Repository = "https://github.com/selimrbd/py-obsidianmd"
+
+[dependency-groups]
+dev = [
+    "black>=22.0,<23",
+    "coverage>=6.4,<7",
+    "pytest>=7.1,<8",
+    "ipykernel>=6.15.1,<7",
+    "mkdocs>=1.3.1,<2",
+    "pydocstyle>=6.1.1,<7",
+    "pylint>=2.15.0,<3",
+    "mkdocstrings>=0.19.0,<0.20",
+    "mkdocs-material>=8.5.11,<9",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-python-frontmatter = "^1.0.0"
+[tool.uv]
 
-[tool.poetry.dev-dependencies]
-black = "^22.0"
-coverage = "^6.4"
-pytest = "^7.1"
-ipykernel = "^6.15.1"
-mkdocs = "^1.3.1"
-pydocstyle = "^6.1.1"
-pylint = "^2.15.0"
-mkdocstrings = "^0.19.0"
-mkdocs-material = "^8.5.11"
+[tool.uv.build-backend]
+module-name = ["pyomd"]
+module-root = ""
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"
