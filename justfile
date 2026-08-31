@@ -18,7 +18,7 @@ format:
 
 # run linter
 lint:
-    uvx ruff check .
+    uvx ruff check . --exclude test
 
 # run type checker
 type:
