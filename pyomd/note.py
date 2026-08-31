@@ -2,12 +2,17 @@
 
 import os
 import re
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable, Optional, Union
 
 from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
 
-from .exceptions import NoteCreationError, ParsingNoteMetadataError, UpdateContentError
+from .exceptions import (
+    InvalidFrontmatterError,
+    NoteCreationError,
+    ParsingNoteMetadataError,
+    UpdateContentError,
+)
 
 
 class Note:
@@ -22,7 +27,7 @@ class Note:
             The note's textual content (including all types of metadata).
     """
 
-    def __init__(self, path: Union[Path, str]):
+    def __init__(self, path: Path | str):
         """Initializes a Note object.
 
         Args:
@@ -79,7 +84,7 @@ class Note:
         self,
         inline_position: str = "bottom",
         inline_inplace: bool = True,
-        inline_tml: Union[str, Callable] = "standard",  # type: ignore
+        inline_tml: str | Callable = "standard",
         write: bool = False,
     ):
         """Updates the note's content.
@@ -117,12 +122,17 @@ class Note:
                 inline_inplace=inline_inplace,
                 inline_tml=inline_tml,
             )
-        except Exception as e:
+        except (
+            NotImplementedError,
+            InvalidFrontmatterError,
+            ValueError,
+            KeyError,
+        ) as e:
             raise UpdateContentError(path=self.path, exception=e)
         if write:
             self.write()
 
-    def write(self, path: Union[Path, None] = None):
+    def write(self, path: Path | None = None):
         """Writes the note's content to disk.
 
         Args:
@@ -150,7 +160,7 @@ class Notes:
             NoteMetadataBatch object
     """
 
-    def __init__(self, paths: Union[Path, list[Path]], recursive: bool = True):
+    def __init__(self, paths: Path | list[Path], recursive: bool = True):
         """Initializes a Notes object.
 
         Add paths to individual notes or to directories containing multiple notes.
@@ -169,7 +179,7 @@ class Notes:
     def __len__(self):
         return len(self.notes)
 
-    def add(self, paths: Union[Path, list[Path]], recursive: bool = True):
+    def add(self, paths: Path | list[Path], recursive: bool = True):
         """Adds new notes to the Notes object.
 
         Args:
@@ -184,9 +194,9 @@ class Notes:
         for pth in paths:
             assert pth.exists(), f"file or folder doesn't exist: '{pth}'"
             if pth.is_dir():
-                for root, _, fls in os.walk(pth):  # type: ignore
-                    for f_name in fls:  # type: ignore
-                        pth_f: Path = Path(root) / f_name  # type: ignore
+                for root, _, fls in os.walk(pth):
+                    for f_name in fls:
+                        pth_f: Path = Path(root) / f_name
                         if Note._is_md_file(pth_f):
                             self.notes.append(Note(path=pth_f))
                     if not recursive:
@@ -203,12 +213,11 @@ class Notes:
 
     def filter(
         self,
-        starts_with: Optional[str] = None,
-        ends_with: Optional[str] = None,
-        pattern: Optional[str] = None,
-        has_meta: Optional[
-            list[tuple[str, Union[list[str], str, None], Optional[MetadataType]]]
-        ] = None,
+        starts_with: str | None = None,
+        ends_with: str | None = None,
+        pattern: str | None = None,
+        has_meta: list[tuple[str, list[str] | str | None, MetadataType | None]]
+        | None = None,
     ):
         """Keep only notes that have certain characteristics.
 
@@ -237,7 +246,7 @@ class Notes:
             include: list[bool] = []
             for note in self.notes:
                 inc = True
-                for (k, vals, meta_type) in has_meta:
+                for k, vals, meta_type in has_meta:
                     if not note.metadata.has(k=k, l=vals, meta_type=meta_type):
                         inc = False
                 include.append(inc)
@@ -247,7 +256,7 @@ class Notes:
         self,
         inline_position: str = "bottom",
         inline_inplace: bool = True,
-        inline_tml: Union[str, Callable] = "standard",  # type: ignore
+        inline_tml: str | Callable = "standard",
         write: bool = False,
     ):
         """Updates the content of all notes.

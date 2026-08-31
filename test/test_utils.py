@@ -3,7 +3,6 @@ import json
 import os
 from pathlib import Path
 from string import Template
-from typing import Union
 
 PATH_TEST_DATA = Path(__file__).parent / "0-test-data"
 PATH_TEST_NOTES = PATH_TEST_DATA / "notes"
@@ -11,9 +10,8 @@ PATH_TEST_NOTES = PATH_TEST_DATA / "notes"
 from pyomd.metadata import MetadataType, Order
 
 
-def load_test_notes(path_test_notes: Union[Path, None]) -> dict:
-    """ """
-    data = dict()
+def load_test_notes(path_test_notes: Path | None) -> dict:
+    data = {}
     if path_test_notes is None:
         return data
     note_dirs = os.listdir(path_test_notes)
@@ -42,7 +40,7 @@ def load_test_definitions(path_test_def: Path) -> dict:
 
 
 def load_data(
-    path_test_def: Path, path_test_notes: Union[Path, None] = PATH_TEST_NOTES
+    path_test_def: Path, path_test_notes: Path | None = PATH_TEST_NOTES
 ) -> dict:
     data = load_test_notes(path_test_notes)
     data.update(load_test_definitions(path_test_def))
@@ -54,7 +52,7 @@ def load_data(
 
 def get_test_arg_meta_type(
     test_id: str, name_f: str, data: dict
-) -> Union[MetadataType, str, None]:
+) -> MetadataType | str | None:
     meta_type_str: str = data["tests"].get("default_meta_type", None)
     meta_type_str = data["tests"][f"tests-{name_f}"][test_id]["inputs"].get(
         "meta_type", meta_type_str
@@ -65,8 +63,8 @@ def get_test_arg_meta_type(
 
 
 def parse_test_arg_meta_type(
-    meta_type_str: Union[str, None]
-) -> Union[MetadataType, str, None]:
+    meta_type_str: str | None,
+) -> MetadataType | str | None:
     if meta_type_str == ">>MetadataType.FRONTMATTER":
         meta_type = MetadataType.FRONTMATTER
     elif meta_type_str == ">>MetadataType.INLINE":
@@ -78,13 +76,13 @@ def parse_test_arg_meta_type(
     return meta_type
 
 
-def parse_test_arg_order(order_str: str) -> Union[Order, str]:
+def parse_test_arg_order(order_str: str) -> Order | str:
     if order_str == ">>Order.ASC":
         order = Order.ASC
     elif order_str == ">>Order.DESC":
         order = Order.DESC
     else:
-        order: Union[str, Order] = order_str
+        order: Order | str = order_str
     return order
 
 
@@ -97,16 +95,14 @@ def parse_name_function_tested(name_f: str):
 
 def build_error_msg(test_id: str, dict_tests: dict) -> str:
     templ = "\n-- TEST FAILED --\n"
-    templ += f'test ID: "$test_id"\n'
+    templ += 'test ID: "$test_id"\n'
     templ += 'test description: "$test_desc"'
     templ = Template(templ)
     err_msg = templ.substitute(test_id=test_id, test_desc=dict_tests["description"])
     return err_msg
 
 
-def assert_dict_match(
-    d1: Union[dict, None], d2: Union[dict, None], msg: str = ""
-) -> None:
+def assert_dict_match(d1: dict | None, d2: dict | None, msg: str = "") -> None:
     """
     assert that 2 dictionaries match. If they dont, print the output VS expected
     Arguments:
@@ -114,8 +110,8 @@ def assert_dict_match(
         - d2: expected result
         - msg: additional message to display at the beginning of the assertion error
     """
-    d1 = dict() if d1 is None else d1
-    d2 = dict() if d2 is None else d2
+    d1 = {} if d1 is None else d1
+    d2 = {} if d2 is None else d2
     err_template = Template(
         "$msg\n---\ndictionaries don't match.\nkey: '$k'\noutput: '$o'\nexpected result: '$er'\n"
     )
@@ -153,8 +149,8 @@ def assert_list_match(
         - l1: output of function to test
         - l2: expected result
     """
-    l1 = list() if l1 is None else l1
-    l2 = list() if l2 is None else l2
+    l1 = [] if l1 is None else l1
+    l2 = [] if l2 is None else l2
     err_template = Template(
         "$msg\n---\nlists don't match.\noutput: $o\nexpected result: $er\n"
     )

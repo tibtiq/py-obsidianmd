@@ -2,7 +2,6 @@
 
 from pathlib import Path
 from string import Template
-from typing import Union
 
 
 class InvalidFrontmatterError(Exception):
@@ -17,7 +16,7 @@ class InvalidFrontmatterError(Exception):
 class ParsingNoteMetadataError(Exception):
     """Error while parsing a note's metadata."""
 
-    def __init__(self, path: Union[Path, str], exception: Exception):
+    def __init__(self, path: Path | str, exception: Exception):
         self.path = path
         self.exception = exception
         self.msg = f'Error while parsing metadata for note at path: "{self.path}". Exception:\n{self.exception}'
@@ -27,7 +26,7 @@ class ParsingNoteMetadataError(Exception):
 class NoteCreationError(Exception):
     """Error while creating a note object."""
 
-    def __init__(self, path: Union[Path, str], exception: Exception):
+    def __init__(self, path: Path | str, exception: Exception):
         self.path = path
         self.exception = exception
         self.msg = f'Error while creating Note object for path: "{self.path}". Exception:\n{self.exception}'
@@ -37,7 +36,7 @@ class NoteCreationError(Exception):
 class UpdateContentError(Exception):
     """Error when updating the content of a note."""
 
-    def __init__(self, path: Union[Path, str], exception: Exception):
+    def __init__(self, path: Path | str, exception: Exception):
         self.path = path
         self.exception = exception
         self.msg = f'Error while updating the content of the note: "{self.path}". Exception:\n{self.exception}'
@@ -47,9 +46,7 @@ class UpdateContentError(Exception):
 class ArgTypeError(Exception):
     """The argument isn't of the expected type."""
 
-    def __init__(
-        self, var_name: str, type_given: type, type_expected: Union[type, str]
-    ):
+    def __init__(self, var_name: str, type_given: type, type_expected: type | str):
         self.var_name = var_name
         self.type_given = type_given
         self.type_expected = type_expected

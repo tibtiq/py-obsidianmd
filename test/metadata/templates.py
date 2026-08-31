@@ -1,11 +1,10 @@
 import inspect
+from collections.abc import Callable
 from functools import partial
 from pathlib import Path
-from typing import Callable, Type, Union
 
 import pytest
 
-from pyomd.exceptions import InvalidFrontmatterError  # pylance: ignore
 from pyomd.metadata import (
     InlineMetadata,
     MetadataType,
@@ -38,7 +37,7 @@ def add_test_function_metadata(
     fn: TestTemplateMetadata,
     test_id: str,
     data: dict,
-    meta_type: Union[MetadataType, None] = None,
+    meta_type: MetadataType | None = None,
 ):
     """Adds a test function to the global environment.
 
@@ -89,7 +88,7 @@ def t_parse(test_id: str, data: dict, debug: bool = False) -> None:
     _, expected_output, d_n, d_t, MetaClass = prep_test_data(test_id, data, name_f)
 
     if "exception" in expected_output:
-        exception: Type[Exception] = globals()[expected_output["exception"]]
+        exception: type[Exception] = globals()[expected_output["exception"]]
         with pytest.raises(exception):
             MetaClass._parse(d_n["content"])
     else:
@@ -155,7 +154,9 @@ def t_update_content(test_id: str, data: dict, debug: bool = False) -> None:
     if isinstance(m, InlineMetadata):
         arg_pos: str = inputs["position"]
         arg_inplace: bool = inputs["inplace"]
-        upd: str = m._update_content(d_n["content"], position=arg_pos, inplace=arg_inplace)  # type: ignore
+        upd: str = m._update_content(
+            d_n["content"], position=arg_pos, inplace=arg_inplace
+        )  # type: ignore
     else:
         upd: str = m._update_content(d_n["content"])  # type: ignore
     name_field_true: str = expected_output["field_name"]
