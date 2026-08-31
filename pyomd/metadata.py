@@ -330,12 +330,15 @@ class Frontmatter(Metadata):
     @staticmethod
     def is_frontmatter_valid(path: Path) -> bool:
         """Checks if the file frontmatter is valid."""
+        is_valid = True
         try:
             with open(path, "r") as f:
                 frontmatter.load(f)
-        except:
-            return False
-        return True
+        except (FileNotFoundError, PermissionError, IsADirectoryError, OSError) as e:
+            print(f"File operations failed due to a system error: {e}")
+            is_valid = False
+
+        return is_valid
 
     @classmethod
     def _parse(
