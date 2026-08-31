@@ -1,7 +1,7 @@
 import inspect
 from functools import partial
 from pathlib import Path
-from typing import Callable, Union
+from typing import Callable
 
 from pyomd.metadata import MetadataType
 from pyomd.note import Notes
@@ -38,8 +38,8 @@ def prep_test_data_note(test_id: str, data: dict, name_f: str):
 
 
 def parse_test_arg_has_meta(
-    has_meta: Union[None, list[list[str]]],
-) -> Union[None, list[tuple[str, Union[None, list[str]], MetadataType]]]:
+    has_meta: None | list[list[str]],
+) -> None | list[tuple[str, None | list[str]], MetadataType]:
     if has_meta is None:
         return None
     return [(x[0], x[1], parse_test_arg_meta_type(x[2])) for x in has_meta]
