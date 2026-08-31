@@ -133,7 +133,7 @@ class Metadata(ABC):
                 Allow for duplicate values for a given metadata key.
         """
         if l is None:
-            nl = list()
+            nl = []
         elif isinstance(l, UserInput):
             nl = [str(l)]
         else:
@@ -168,7 +168,7 @@ class Metadata(ABC):
 
         See `NoteMetadata.remove_rempty` for argument description
         """
-        empty: list[str] = list()
+        empty: list[str] = []
         for k in self.metadata:
             if len(self.metadata[k]) == 0:
                 empty.append(k)
@@ -359,7 +359,7 @@ class Frontmatter(Metadata):
 
         for k in meta_dict:
             if meta_dict[k] is None:
-                meta_dict[k] = list()
+                meta_dict[k] = []
 
         # make all elements into list of strings
         for k, v in meta_dict.items():
@@ -383,7 +383,7 @@ class Frontmatter(Metadata):
         """Parse frontmatter metadata using regex"""
         mtc = re.search(cls.REGEX, note_content)
         if mtc is None:
-            ext_str = list()
+            ext_str = []
         fm_str = mtc.group()
         ext_str = [fm_str]
 
@@ -448,7 +448,7 @@ class InlineMetadata(Metadata):
             tml = self._tml_callout
 
         if ignore_k is None:
-            ignore_k = list()
+            ignore_k = []
         if isinstance(ignore_k, str):
             ignore_k = [ignore_k]
         meta_dict = {k: v for (k, v) in self.metadata.items() if k not in ignore_k}
@@ -501,7 +501,7 @@ class InlineMetadata(Metadata):
         Uses the python-frontmatter library.
         """
 
-        matches: list[re.Match] = list()
+        matches: list[re.Match] = {}
         for l in note_content.split("\n"):
             m = cls.REGEX.search(l)
             b = m is not None
@@ -509,7 +509,7 @@ class InlineMetadata(Metadata):
             if b and not b_enc:
                 matches.append(m)
 
-        tmp: dict[str, list[str]] = dict()
+        tmp: dict[str, list[str]] = {}
         for m in matches:
             k = m.group("key").strip()
             v = m.group("values")
@@ -527,7 +527,7 @@ class InlineMetadata(Metadata):
     @classmethod
     def _erase(cls, note_content: str) -> str:
 
-        keep: list[str] = list()
+        keep: list[str] = []
         for l in note_content.split("\n"):
             b_match = re.search(cls.REGEX, l) is not None
             b_match_enclosed = re.search(cls.REGEX_ENCLOSED, l) is not None
@@ -570,7 +570,7 @@ class InlineMetadata(Metadata):
         meta_dict: dict,
         debug: bool = False,
     ) -> SpanList:
-        sp_del: SpanList = list()
+        sp_del: SpanList = []
         for m in r.finditer(s):
             if r_enc.match(m.group()):
                 continue
@@ -601,7 +601,7 @@ class InlineMetadata(Metadata):
     ) -> SpanList:
         """Returns spans for inline metadata which keys appear earlier in the file content."""
         found_keys: set[str] = set()
-        spans_del: SpanList = list()
+        spans_del: SpanList = []
         for m in r.finditer(s):
             if r_enc.match(m.group()):
                 continue
