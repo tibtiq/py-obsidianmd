@@ -3,8 +3,8 @@ from collections.abc import Callable
 from functools import partial
 from pathlib import Path
 
-from pyomd.metadata import MetadataType
-from pyomd.note import Notes
+from src.pyomd.metadata import MetadataType
+from src.pyomd.note import Notes
 
 from ..test_utils import (
     assert_list_match,
