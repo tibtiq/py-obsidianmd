@@ -228,7 +228,7 @@ class Metadata(ABC):
         See `NoteMetadata.order_keys` for argument description
         """
         reverse = how == Order.DESC
-        list_keys = sorted(list(self.metadata.keys()), reverse=reverse)
+        list_keys = sorted(self.metadata.keys(), reverse=reverse)
         self.metadata = {k: self.metadata.pop(k) for k in list_keys}
 
     def order(
