@@ -11,7 +11,7 @@ from pyomd.metadata import MetadataType, Order
 
 
 def load_test_notes(path_test_notes: Path | None) -> dict:
-    data = dict()
+    data = {}
     if path_test_notes is None:
         return data
     note_dirs = os.listdir(path_test_notes)
@@ -110,8 +110,8 @@ def assert_dict_match(d1: dict | None, d2: dict | None, msg: str = "") -> None:
         - d2: expected result
         - msg: additional message to display at the beginning of the assertion error
     """
-    d1 = dict() if d1 is None else d1
-    d2 = dict() if d2 is None else d2
+    d1 = {} if d1 is None else d1
+    d2 = {} if d2 is None else d2
     err_template = Template(
         "$msg\n---\ndictionaries don't match.\nkey: '$k'\noutput: '$o'\nexpected result: '$er'\n"
     )
