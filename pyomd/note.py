@@ -79,7 +79,7 @@ class Note:
         self,
         inline_position: str = "bottom",
         inline_inplace: bool = True,
-        inline_tml: str | Callable = "standard",  # type: ignore
+        inline_tml: str | Callable = "standard",
         write: bool = False,
     ):
         """Updates the note's content.
@@ -184,9 +184,9 @@ class Notes:
         for pth in paths:
             assert pth.exists(), f"file or folder doesn't exist: '{pth}'"
             if pth.is_dir():
-                for root, _, fls in os.walk(pth):  # type: ignore
-                    for f_name in fls:  # type: ignore
-                        pth_f: Path = Path(root) / f_name  # type: ignore
+                for root, _, fls in os.walk(pth):
+                    for f_name in fls:
+                        pth_f: Path = Path(root) / f_name
                         if Note._is_md_file(pth_f):
                             self.notes.append(Note(path=pth_f))
                     if not recursive:
@@ -246,7 +246,7 @@ class Notes:
         self,
         inline_position: str = "bottom",
         inline_inplace: bool = True,
-        inline_tml: str | Callable = "standard",  # type: ignore
+        inline_tml: str | Callable = "standard",
         write: bool = False,
     ):
         """Updates the content of all notes.
