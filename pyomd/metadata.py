@@ -218,7 +218,7 @@ class Metadata(ABC):
         if isinstance(k, str):
             k = [k]
         for e in k:
-            reverse = False if (how == Order.ASC) else True
+            reverse = how != Order.ASC
             self.metadata[e] = sorted(self.metadata[e], reverse=reverse)
 
     def order_keys(self, how: Order = Order.ASC) -> None:
