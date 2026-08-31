@@ -827,7 +827,7 @@ class NoteMetadata:
     def remove(
         self,
         k: str,
-        l: UserInput | list[UserInput] = None,
+        l: UserInput | list[UserInput] | None = None,
         meta_type: MetadataType | None = None,
     ):
         """Removes a metadata key or particular values.
