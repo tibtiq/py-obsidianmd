@@ -284,7 +284,7 @@ class Metadata(ABC):
         """Checks if the metadata type is present in the note"""
         try:
             meta_dict = cls._parse(note_content)
-        except Exception as _:
+        except Exception:
             meta_dict = {}
         return len(meta_dict) > 0
 
