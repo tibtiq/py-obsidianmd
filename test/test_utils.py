@@ -97,7 +97,7 @@ def parse_name_function_tested(name_f: str):
 
 def build_error_msg(test_id: str, dict_tests: dict) -> str:
     templ = "\n-- TEST FAILED --\n"
-    templ += f'test ID: "$test_id"\n'
+    templ += 'test ID: "$test_id"\n'
     templ += 'test description: "$test_desc"'
     templ = Template(templ)
     err_msg = templ.substitute(test_id=test_id, test_desc=dict_tests["description"])
