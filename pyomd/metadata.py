@@ -10,7 +10,7 @@ from pathlib import Path
 from string import Template
 from typing import TYPE_CHECKING, Callable, Union
 
-import frontmatter  # type: ignore
+import frontmatter
 
 from pyomd.config import CONFIG
 
