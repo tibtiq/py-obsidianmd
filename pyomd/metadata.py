@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from pathlib import Path
 from string import Template
-from typing import TYPE_CHECKING, Callable, Optional, Tuple, Type, Union
+from typing import TYPE_CHECKING, Callable, Union
 
 import frontmatter  # type: ignore
 
@@ -20,11 +20,11 @@ from .misc import Order
 if TYPE_CHECKING:
     from note import Note
 
-UserInput = Union[str, int, float]
-MetaValues = Union[list[str], None]
+UserInput = str | int | float
+MetaValues = list[str] | None
 MetaDict = dict[str, MetaValues]
 ParseFunction = Callable[[str], tuple[MetaDict, str]]
-Number = Union[int, float]
+Number = int | float
 Span = tuple[int, int]
 SpanList = list[Span]
 
@@ -45,7 +45,7 @@ class MetadataType(Enum):
     DEFAULT = "default"
 
     @staticmethod
-    def get_from_str(s: Union[str, None]) -> MetadataType:
+    def get_from_str(s: str | None) -> MetadataType:
         """Returns Enum value from string.
 
         Args:
@@ -79,7 +79,7 @@ class Metadata(ABC):
     @abstractmethod
     def to_string(self) -> str: ...
 
-    def get(self, k: str) -> Union[list[str], None]:
+    def get(self, k: str) -> list[str] | None:
         """Gets metadata field.
 
         Args:
@@ -90,7 +90,7 @@ class Metadata(ABC):
         """
         return self.metadata.get(k, None)
 
-    def has(self, k: str, l: Union[list[str], None, str] = None) -> bool:
+    def has(self, k: str, l: list[str] | None | str = None) -> bool:
         """Checks if metadata contains field k and values l.
 
         Args:
@@ -116,7 +116,7 @@ class Metadata(ABC):
     def add(
         self,
         k: str,
-        l: Union[UserInput, list[UserInput], None],
+        l: UserInput | list[UserInput] | None,
         overwrite: bool = False,
         allow_duplicates: bool = False,
     ) -> None:
@@ -150,9 +150,7 @@ class Metadata(ABC):
             else:
                 self.metadata[k] = nl
 
-    def remove(
-        self, k: str, l: Optional[Union[UserInput, list[UserInput]]] = None
-    ) -> None:
+    def remove(self, k: str, l: UserInput | list[UserInput] | None = None) -> None:
         """Removes a metadata key or particular values.
 
         See `NoteMetadata.remove` for argument description
@@ -178,7 +176,7 @@ class Metadata(ABC):
         for k in empty:
             del self.metadata[k]
 
-    def remove_duplicate_values(self, k: Union[str, list[str], None] = None) -> None:
+    def remove_duplicate_values(self, k: str | list[str] | None = None) -> None:
         """Removes duplicate values of a metadata key.
 
         See `NoteMetadata.remove_duplicate_values` for argument description
@@ -194,7 +192,7 @@ class Metadata(ABC):
             raise ArgTypeError(
                 var_name="k",
                 type_given=type(k),
-                type_expected=str(Union[str, list[str], None]),
+                type_expected=str(str | list[str] | None),
             )
 
         for k2 in list_keys:
@@ -203,7 +201,7 @@ class Metadata(ABC):
             self.metadata[k2] = list(dict.fromkeys(self.metadata[k2]))
 
     def order_values(
-        self, k: Union[str, list[str], None] = None, how: Order = Order.ASC
+        self, k: str | list[str] | None = None, how: Order = Order.ASC
     ) -> None:
         """Orders metadata values.
 
@@ -235,9 +233,9 @@ class Metadata(ABC):
 
     def order(
         self,
-        k: Union[str, list[str], None] = None,
-        o_keys: Union[Order, None] = Order.ASC,
-        o_values: Union[Order, None] = Order.ASC,
+        k: str | list[str] | None = None,
+        o_keys: Order | None = Order.ASC,
+        o_values: Order | None = Order.ASC,
     ):
         """Orders metadata keys and values.
 
@@ -341,7 +339,7 @@ class Frontmatter(Metadata):
 
     @classmethod
     def _parse(
-        cls, note_content: str, parse_fn: Union[ParseFunction, None] = None
+        cls, note_content: str, parse_fn: ParseFunction | None = None
     ) -> MetaDict:
         """Parse note content to extract metadata dictionary."""
         if parse_fn is None:
@@ -430,8 +428,8 @@ class InlineMetadata(Metadata):
 
     def to_string(
         self,
-        ignore_k: Union[str, list[str], None] = None,
-        tml: Union[str, Callable] = "standard",
+        ignore_k: str | list[str] | None = None,
+        tml: str | Callable = "standard",
     ) -> str:
         """Render metadata as a string.
 
@@ -464,7 +462,7 @@ class InlineMetadata(Metadata):
         note_content: str,
         position: str = "bottom",
         inplace: bool = True,
-        tml: Union[str, Callable] = "standard",  # type: ignore
+        tml: str | Callable = "standard",
     ) -> str:
         """
         position:
@@ -489,7 +487,7 @@ class InlineMetadata(Metadata):
 
     @classmethod
     def _parse(
-        cls, note_content: str, parse_fn: Union[ParseFunction, None] = None
+        cls, note_content: str, parse_fn: ParseFunction | None = None
     ) -> MetaDict:
         """Parse note content to extract metadata dictionary."""
         if parse_fn is None:
@@ -620,7 +618,7 @@ class InlineMetadata(Metadata):
                     print(f"keep: {m.group()}")
         return spans_del
 
-    def _update_content_inplace(self, note_content: str) -> Tuple[str, set[str]]:
+    def _update_content_inplace(self, note_content: str) -> tuple[str, set[str]]:
         """
         Updates inline metadata in place.
 
@@ -659,7 +657,7 @@ class InlineMetadata(Metadata):
         return (note_content, updated_fields)
 
     @staticmethod
-    def _tml_standard(meta_dict: dict = None) -> str:  # type: ignore
+    def _tml_standard(meta_dict: dict | None = None) -> str:  # type: ignore
         """
         Args:
             - meta_dict: dictionary containing inline metadata (k,v pairs)
@@ -671,7 +669,7 @@ class InlineMetadata(Metadata):
         return out
 
     @staticmethod
-    def _tml_callout(meta_dict: dict = None) -> str:
+    def _tml_callout(meta_dict: dict | None = None) -> str:
         """
         Args:
             - meta_dict: dictionary containing inline metadata (k,v pairs)
@@ -699,18 +697,18 @@ class NoteMetadata:
         self.inline = InlineMetadata(note_content)
 
     @classmethod
-    def _parse_arg_meta_type(cls, meta_type: Union[MetadataType, None]) -> MetadataType:
+    def _parse_arg_meta_type(cls, meta_type: MetadataType | None) -> MetadataType:
         if meta_type is None:
             meta_type = MetadataType.ALL
         if not isinstance(meta_type, MetadataType):  # type: ignore
             raise ArgTypeError(
                 var_name="meta_type",
                 type_given=type(meta_type),
-                type_expected=str(Union[MetadataType, None]),
+                type_expected=str(MetadataType | None),
             )
         return meta_type
 
-    def get_default_metadata(self, k: Optional[str]):
+    def get_default_metadata(self, k: str | None):
         """Get default metadata, as defined in the library configuration parameters.
 
         Args:
@@ -729,7 +727,7 @@ class NoteMetadata:
             meta_type = MetadataType.get_from_str(CONFIG.cfg["global"]["default_meta"])
         return meta_type
 
-    def get(self, k: str, meta_type: Union[MetadataType, None] = None) -> MetaValues:
+    def get(self, k: str, meta_type: MetadataType | None = None) -> MetaValues:
         """Returns metadata values for the given key.
 
         Args:
@@ -762,8 +760,8 @@ class NoteMetadata:
     def has(
         self,
         k: str,
-        l: Union[list[str], None, str] = None,
-        meta_type: Union[MetadataType, None] = None,
+        l: list[str] | None | str = None,
+        meta_type: MetadataType | None = None,
     ) -> bool:
         """Checks if metadata contains field k and values l in a given meta type.
 
@@ -794,7 +792,7 @@ class NoteMetadata:
     def add(
         self,
         k: str,
-        l: Union[UserInput, list[UserInput], None],
+        l: UserInput | list[UserInput] | None,
         meta_type: MetadataType = MetadataType.DEFAULT,
         overwrite: bool = False,
         allow_duplicates: bool = False,
@@ -828,8 +826,8 @@ class NoteMetadata:
     def remove(
         self,
         k: str,
-        l: Optional[Union[UserInput, list[UserInput]]] = None,
-        meta_type: Union[MetadataType, None] = None,
+        l: UserInput | list[UserInput] = None,
+        meta_type: MetadataType | None = None,
     ):
         """Removes a metadata key or particular values.
 
@@ -872,8 +870,8 @@ class NoteMetadata:
 
     def remove_duplicate_values(
         self,
-        k: Union[str, list[str], None] = None,
-        meta_type: Union[MetadataType, None] = None,
+        k: str | list[str] | None = None,
+        meta_type: MetadataType | None = None,
     ):
         """Remove duplicate values in the note's metadata
 
@@ -896,9 +894,9 @@ class NoteMetadata:
 
     def order_values(
         self,
-        k: Union[str, list[str], None] = None,
+        k: str | list[str] | None = None,
         how: Order = Order.ASC,
-        meta_type: Union[MetadataType, None] = None,
+        meta_type: MetadataType | None = None,
     ) -> None:
         """Order the values of a metadata field.
 
@@ -922,7 +920,7 @@ class NoteMetadata:
             raise ValueError(f"Unsupported value for argument meta_type: {meta_type}")
 
     def order_keys(
-        self, how: Order = Order.DESC, meta_type: Union[MetadataType, None] = None
+        self, how: Order = Order.DESC, meta_type: MetadataType | None = None
     ) -> None:
         """Order metadata keys.
 
@@ -945,10 +943,10 @@ class NoteMetadata:
 
     def order(
         self,
-        k: Union[str, list[str], None] = None,
-        o_keys: Union[Order, None] = Order.ASC,
-        o_values: Union[Order, None] = Order.ASC,
-        meta_type: Union[MetadataType, None] = None,
+        k: str | list[str] | None = None,
+        o_keys: Order | None = Order.ASC,
+        o_values: Order | None = Order.ASC,
+        meta_type: MetadataType | None = None,
     ):
         """Order metadata keys and values.
 
@@ -975,9 +973,9 @@ class NoteMetadata:
 
     def move(
         self,
-        k: Union[str, list[str], None] = None,
-        fr: Union[MetadataType, None] = None,
-        to: Union[MetadataType, None] = None,
+        k: str | list[str] | None = None,
+        fr: MetadataType | None = None,
+        to: MetadataType | None = None,
     ):
         """Move a metadata field between frontmatter and inline.
 
@@ -1028,7 +1026,7 @@ class NoteMetadata:
         note_content: str,
         inline_position: str = "bottom",
         inline_inplace: bool = True,
-        inline_tml: Union[str, Callable] = "standard",  # type: ignore
+        inline_tml: str | Callable = "standard",
     ) -> str:
         """Update the note's metadata (frontmatter and inline)"""
         str_no_fm = self.frontmatter._erase(note_content)
@@ -1048,7 +1046,7 @@ class NoteMetadataBatch:
     def add(
         self,
         k: str,
-        l: Union[UserInput, list[UserInput], None],
+        l: UserInput | list[UserInput] | None,
         meta_type: MetadataType = MetadataType.DEFAULT,
         overwrite: bool = False,
         allow_duplicates: bool = False,
@@ -1069,8 +1067,8 @@ class NoteMetadataBatch:
     def remove(
         self,
         k: str,
-        l: Optional[Union[UserInput, list[UserInput]]] = None,
-        meta_type: Union[MetadataType, None] = None,
+        l: UserInput | list[UserInput] | None = None,
+        meta_type: MetadataType | None = None,
     ):
         """Removes metadata from the batch of notes.
 
@@ -1081,9 +1079,9 @@ class NoteMetadataBatch:
 
     def move(
         self,
-        k: Union[str, list[str], None] = None,
-        fr: Union[MetadataType, None] = None,
-        to: Union[MetadataType, None] = None,
+        k: str | list[str] | None = None,
+        fr: MetadataType | None = None,
+        to: MetadataType | None = None,
     ):
         """Moves metadata for the batch of notes.
 
@@ -1094,8 +1092,8 @@ class NoteMetadataBatch:
 
     def remove_duplicate_values(
         self,
-        k: Union[str, list[str], None] = None,
-        meta_type: Union[MetadataType, None] = None,
+        k: str | list[str] | None = None,
+        meta_type: MetadataType | None = None,
     ):
         """Remove duplicate metadata values for the batch of notes.
 
@@ -1106,10 +1104,10 @@ class NoteMetadataBatch:
 
     def order(
         self,
-        k: Union[str, list[str], None] = None,
-        o_keys: Union[Order, None] = Order.ASC,
-        o_values: Union[Order, None] = Order.ASC,
-        meta_type: Union[MetadataType, None] = None,
+        k: str | list[str] | None = None,
+        o_keys: Order | None = Order.ASC,
+        o_values: Order | None = Order.ASC,
+        meta_type: MetadataType | None = None,
     ):
         """Orders metadata for the batch of notes.
 
@@ -1123,7 +1121,7 @@ class NoteMetadataBatch:
 
 def return_metaclass(
     meta_type: MetadataType,
-) -> Union[Type[Metadata], Type[NoteMetadata], None]:
+) -> type[Metadata | NoteMetadata] | None:
     if meta_type == MetadataType.FRONTMATTER:
         return Frontmatter
     elif meta_type == MetadataType.INLINE:
