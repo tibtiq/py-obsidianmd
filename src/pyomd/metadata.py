@@ -19,7 +19,7 @@ from .exceptions import ArgTypeError, InvalidFrontmatterError
 from .misc import Order
 
 if TYPE_CHECKING:
-    from note import Note
+    from pyomd.note import Note
 
 UserInput = str | int | float
 MetaValues = list[str] | None
