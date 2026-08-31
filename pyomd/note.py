@@ -3,7 +3,7 @@
 import os
 import re
 from pathlib import Path
-from typing import Callable, Optional, Union
+from typing import Callable
 
 from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
 
@@ -22,7 +22,7 @@ class Note:
             The note's textual content (including all types of metadata).
     """
 
-    def __init__(self, path: Union[Path, str]):
+    def __init__(self, path: Path | str):
         """Initializes a Note object.
 
         Args:
@@ -79,7 +79,7 @@ class Note:
         self,
         inline_position: str = "bottom",
         inline_inplace: bool = True,
-        inline_tml: Union[str, Callable] = "standard",  # type: ignore
+        inline_tml: str | Callable = "standard",  # type: ignore
         write: bool = False,
     ):
         """Updates the note's content.
@@ -122,7 +122,7 @@ class Note:
         if write:
             self.write()
 
-    def write(self, path: Union[Path, None] = None):
+    def write(self, path: Path | None = None):
         """Writes the note's content to disk.
 
         Args:
@@ -150,7 +150,7 @@ class Notes:
             NoteMetadataBatch object
     """
 
-    def __init__(self, paths: Union[Path, list[Path]], recursive: bool = True):
+    def __init__(self, paths: Path | list[Path], recursive: bool = True):
         """Initializes a Notes object.
 
         Add paths to individual notes or to directories containing multiple notes.
@@ -169,7 +169,7 @@ class Notes:
     def __len__(self):
         return len(self.notes)
 
-    def add(self, paths: Union[Path, list[Path]], recursive: bool = True):
+    def add(self, paths: Path | list[Path], recursive: bool = True):
         """Adds new notes to the Notes object.
 
         Args:
@@ -203,12 +203,11 @@ class Notes:
 
     def filter(
         self,
-        starts_with: Optional[str] = None,
-        ends_with: Optional[str] = None,
-        pattern: Optional[str] = None,
-        has_meta: Optional[
-            list[tuple[str, Union[list[str], str, None], Optional[MetadataType]]]
-        ] = None,
+        starts_with: str | None = None,
+        ends_with: str | None = None,
+        pattern: str | None = None,
+        has_meta: list[tuple[str, list[str] | str | None, MetadataType | None]]
+        | None = None,
     ):
         """Keep only notes that have certain characteristics.
 
@@ -247,7 +246,7 @@ class Notes:
         self,
         inline_position: str = "bottom",
         inline_inplace: bool = True,
-        inline_tml: Union[str, Callable] = "standard",  # type: ignore
+        inline_tml: str | Callable = "standard",  # type: ignore
         write: bool = False,
     ):
         """Updates the content of all notes.
