@@ -149,8 +149,8 @@ def assert_list_match(
         - l1: output of function to test
         - l2: expected result
     """
-    l1 = list() if l1 is None else l1
-    l2 = list() if l2 is None else l2
+    l1 = [] if l1 is None else l1
+    l2 = [] if l2 is None else l2
     err_template = Template(
         "$msg\n---\nlists don't match.\noutput: $o\nexpected result: $er\n"
     )
