@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pytest
 
-from pyomd.exceptions import InvalidFrontmatterError  # pylance: ignore
 from pyomd.metadata import (
     InlineMetadata,
     MetadataType,
