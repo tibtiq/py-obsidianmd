@@ -2,8 +2,8 @@
 
 import os
 import re
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
 
