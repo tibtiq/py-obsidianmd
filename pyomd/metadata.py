@@ -211,7 +211,7 @@ class Metadata(ABC):
         if not isinstance(how, Order):
             raise ArgTypeError(
                 var_name="how", type_given=type(how), type_expected=Order
-            )  # type: ignore
+            )
 
         if k is None:
             k = list(self.metadata.keys())
@@ -333,7 +333,7 @@ class Frontmatter(Metadata):
         """Checks if the file frontmatter is valid."""
         try:
             with open(path, "r") as f:
-                frontmatter.load(f)  # type: ignore
+                frontmatter.load(f)
         except:
             return False
         return True
@@ -656,7 +656,7 @@ class InlineMetadata(Metadata):
         return (note_content, updated_fields)
 
     @staticmethod
-    def _tml_standard(meta_dict: dict | None = None) -> str:  # type: ignore
+    def _tml_standard(meta_dict: dict | None = None) -> str:
         """
         Args:
             - meta_dict: dictionary containing inline metadata (k,v pairs)
@@ -699,7 +699,7 @@ class NoteMetadata:
     def _parse_arg_meta_type(cls, meta_type: MetadataType | None) -> MetadataType:
         if meta_type is None:
             meta_type = MetadataType.ALL
-        if not isinstance(meta_type, MetadataType):  # type: ignore
+        if not isinstance(meta_type, MetadataType):
             raise ArgTypeError(
                 var_name="meta_type",
                 type_given=type(meta_type),
