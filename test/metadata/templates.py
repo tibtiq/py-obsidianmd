@@ -2,7 +2,6 @@ import inspect
 from collections.abc import Callable
 from functools import partial
 from pathlib import Path
-from typing import Union
 
 import pytest
 
@@ -39,7 +38,7 @@ def add_test_function_metadata(
     fn: TestTemplateMetadata,
     test_id: str,
     data: dict,
-    meta_type: Union[MetadataType, None] = None,
+    meta_type: MetadataType | None = None,
 ):
     """Adds a test function to the global environment.
 
