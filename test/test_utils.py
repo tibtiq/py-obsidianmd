@@ -11,7 +11,7 @@ PATH_TEST_NOTES = PATH_TEST_DATA / "notes"
 from pyomd.metadata import MetadataType, Order
 
 
-def load_test_notes(path_test_notes: Union[Path, None]) -> dict:
+def load_test_notes(path_test_notes: Path | None) -> dict:
     """ """
     data = dict()
     if path_test_notes is None:
@@ -42,7 +42,7 @@ def load_test_definitions(path_test_def: Path) -> dict:
 
 
 def load_data(
-    path_test_def: Path, path_test_notes: Union[Path, None] = PATH_TEST_NOTES
+    path_test_def: Path, path_test_notes: Path | None = PATH_TEST_NOTES
 ) -> dict:
     data = load_test_notes(path_test_notes)
     data.update(load_test_definitions(path_test_def))
@@ -54,7 +54,7 @@ def load_data(
 
 def get_test_arg_meta_type(
     test_id: str, name_f: str, data: dict
-) -> Union[MetadataType, str, None]:
+) -> MetadataType | str | None:
     meta_type_str: str = data["tests"].get("default_meta_type", None)
     meta_type_str = data["tests"][f"tests-{name_f}"][test_id]["inputs"].get(
         "meta_type", meta_type_str
@@ -65,8 +65,8 @@ def get_test_arg_meta_type(
 
 
 def parse_test_arg_meta_type(
-    meta_type_str: Union[str, None],
-) -> Union[MetadataType, str, None]:
+    meta_type_str: str | None,
+) -> MetadataType | str | None:
     if meta_type_str == ">>MetadataType.FRONTMATTER":
         meta_type = MetadataType.FRONTMATTER
     elif meta_type_str == ">>MetadataType.INLINE":
@@ -78,13 +78,13 @@ def parse_test_arg_meta_type(
     return meta_type
 
 
-def parse_test_arg_order(order_str: str) -> Union[Order, str]:
+def parse_test_arg_order(order_str: str) -> Order | str:
     if order_str == ">>Order.ASC":
         order = Order.ASC
     elif order_str == ">>Order.DESC":
         order = Order.DESC
     else:
-        order: Union[str, Order] = order_str
+        order: Order | str = order_str
     return order
 
 
@@ -104,9 +104,7 @@ def build_error_msg(test_id: str, dict_tests: dict) -> str:
     return err_msg
 
 
-def assert_dict_match(
-    d1: Union[dict, None], d2: Union[dict, None], msg: str = ""
-) -> None:
+def assert_dict_match(d1: dict | None, d2: dict | None, msg: str = "") -> None:
     """
     assert that 2 dictionaries match. If they dont, print the output VS expected
     Arguments:
