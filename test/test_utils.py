@@ -65,7 +65,7 @@ def get_test_arg_meta_type(
 
 
 def parse_test_arg_meta_type(
-    meta_type_str: Union[str, None]
+    meta_type_str: Union[str, None],
 ) -> Union[MetadataType, str, None]:
     if meta_type_str == ">>MetadataType.FRONTMATTER":
         meta_type = MetadataType.FRONTMATTER

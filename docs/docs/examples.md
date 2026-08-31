@@ -23,7 +23,7 @@ notes = Notes(path_dir)
 
 ```python
 notes.metadata.move(fr=MetadataType.FRONTMATTER, to=MetadataType.INLINE)
-notes.update_content(inline_inplace=False, inline_position="top", inline_tml="standard") #type: ignore
+notes.update_content(inline_inplace=False, inline_position="top", inline_tml="standard")  # type: ignore
 notes.write()
 ```
 ![](./assets/example-gifs/pyomd-1.gif)
@@ -31,7 +31,7 @@ notes.write()
 ## regroup inline metadata inside a callout
 
 ```python
-notes.update_content(inline_inplace=False, inline_position="top", inline_tml="callout") #type: ignore
+notes.update_content(inline_inplace=False, inline_position="top", inline_tml="callout")  # type: ignore
 notes.write()
 ```
 ![](./assets/example-gifs/pyomd-2.gif)
@@ -43,7 +43,7 @@ notes.filter(has_meta=[("tags", "type/book", MetadataType.INLINE)])
 notes.metadata.add(k="type", l="[[book]]", meta_type=MetadataType.INLINE)
 notes.metadata.remove(k="tags", l="type/book", meta_type=MetadataType.INLINE)
 
-notes.update_content(inline_inplace=False, inline_position="top", inline_tml="callout") #type: ignore
+notes.update_content(inline_inplace=False, inline_position="top", inline_tml="callout")  # type: ignore
 notes.write()
 ```
 ![](./assets/example-gifs/pyomd-3.gif)

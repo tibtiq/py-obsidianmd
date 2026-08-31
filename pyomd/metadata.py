@@ -72,13 +72,12 @@ class Metadata(ABC):
             rpr += " None"
         else:
             rpr += "".join(
-                [f'- {k}: {", ".join(v)}\n' for k, v in self.metadata.items()]
+                [f"- {k}: {', '.join(v)}\n" for k, v in self.metadata.items()]
             )
         return rpr
 
     @abstractmethod
-    def to_string(self) -> str:
-        ...
+    def to_string(self) -> str: ...
 
     def get(self, k: str) -> Union[list[str], None]:
         """Gets metadata field.
@@ -211,7 +210,9 @@ class Metadata(ABC):
         See `NoteMetadata.order_values` for argument description
         """
         if not isinstance(how, Order):
-            raise ArgTypeError(var_name="how", type_given=type(how), type_expected=Order)  # type: ignore
+            raise ArgTypeError(
+                var_name="how", type_given=type(how), type_expected=Order
+            )  # type: ignore
 
         if k is None:
             k = list(self.metadata.keys())
@@ -253,8 +254,7 @@ class Metadata(ABC):
         print(self.to_string())
 
     @abstractmethod
-    def _update_content(self, note_content: str) -> str:
-        ...
+    def _update_content(self, note_content: str) -> str: ...
 
     @classmethod
     @abstractmethod
@@ -314,7 +314,7 @@ class Frontmatter(Metadata):
             if len(v) == 1:
                 metadata_repr += f"{k}: {v[0]}\n"
             else:
-                metadata_repr += f'{k}: [ {", ".join(v)} ]\n'
+                metadata_repr += f"{k}: [ {', '.join(v)} ]\n"
         out = "---\n" + metadata_repr + "---\n"
         return out
 

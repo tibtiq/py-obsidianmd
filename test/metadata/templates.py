@@ -155,7 +155,9 @@ def t_update_content(test_id: str, data: dict, debug: bool = False) -> None:
     if isinstance(m, InlineMetadata):
         arg_pos: str = inputs["position"]
         arg_inplace: bool = inputs["inplace"]
-        upd: str = m._update_content(d_n["content"], position=arg_pos, inplace=arg_inplace)  # type: ignore
+        upd: str = m._update_content(
+            d_n["content"], position=arg_pos, inplace=arg_inplace
+        )  # type: ignore
     else:
         upd: str = m._update_content(d_n["content"])  # type: ignore
     name_field_true: str = expected_output["field_name"]

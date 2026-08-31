@@ -237,7 +237,7 @@ class Notes:
             include: list[bool] = []
             for note in self.notes:
                 inc = True
-                for (k, vals, meta_type) in has_meta:
+                for k, vals, meta_type in has_meta:
                     if not note.metadata.has(k=k, l=vals, meta_type=meta_type):
                         inc = False
                 include.append(inc)
