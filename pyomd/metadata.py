@@ -368,9 +368,7 @@ class Frontmatter(Metadata):
                 meta_dict[k] = [v]
             elif isinstance(v, list):
                 meta_dict[k] = [str(x) for x in v]
-            elif isinstance(v, Number):
-                meta_dict[k] = [str(v)]
-            elif isinstance(v, datetime.date):
+            elif isinstance(v, (Number, datetime.date)):
                 meta_dict[k] = [str(v)]
 
         meta_dict = cls._parse_special_fields(
