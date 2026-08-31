@@ -1,7 +1,8 @@
 import inspect
+from collections.abc import Callable
 from functools import partial
 from pathlib import Path
-from typing import Callable, Union
+from typing import Union
 
 import pytest
 
