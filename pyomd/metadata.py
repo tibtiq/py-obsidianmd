@@ -111,7 +111,12 @@ class Metadata(ABC):
         if b_has and len(l) == 0:
             b_has = self.metadata[k] == []
         if b_has and len(l) > 0:
-            b_has = all(val in self.metadata[k] for val in l)
+            b_has = False
+
+            metadata = self.metadata[k]
+            if isinstance(metadata, list):
+                b_has = all(val in metadata for val in l)
+
         return b_has
 
     def add(
