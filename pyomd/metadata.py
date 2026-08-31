@@ -246,7 +246,6 @@ class Metadata(ABC):
             self.order_keys(how=o_keys)
         if o_values is not None:
             self.order_values(k=k, how=o_values)
-        return None
 
     def print(self):
         """Prints metadata information."""
