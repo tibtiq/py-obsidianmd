@@ -314,6 +314,9 @@ class Frontmatter(Metadata):
             return ""
         metadata_repr = ""
         for k, v in self.metadata.items():
+            if v is None:
+                continue
+
             if len(v) == 1:
                 metadata_repr += f"{k}: {v[0]}\n"
             else:
