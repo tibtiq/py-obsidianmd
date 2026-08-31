@@ -9,7 +9,7 @@ from collections.abc import Callable
 from enum import Enum
 from pathlib import Path
 from string import Template
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 import frontmatter
 
@@ -258,7 +258,7 @@ class Metadata(ABC):
     @classmethod
     @abstractmethod
     def _parse(
-        cls, note_content: str, parse_fn: Union[ParseFunction, None] = None
+        cls, note_content: str, parse_fn: ParseFunction | None = None
     ) -> MetaDict:
         pass
 
