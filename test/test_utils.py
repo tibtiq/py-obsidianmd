@@ -11,7 +11,6 @@ from pyomd.metadata import MetadataType, Order
 
 
 def load_test_notes(path_test_notes: Path | None) -> dict:
-    """ """
     data = dict()
     if path_test_notes is None:
         return data
