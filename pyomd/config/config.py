@@ -1,7 +1,6 @@
 import os  # pylint: disable=C0114,missing-module-docstring
 import shutil
 from pathlib import Path
-from typing import Union
 
 import yaml
 
@@ -9,11 +8,11 @@ PATH_CONFIG_DEFAULT = Path(__file__).parent / "default.yaml"
 
 
 class Config:
-    def __init__(self, path_cfg: Union[Path, None] = None):
+    def __init__(self, path_cfg: Path | None = None):
         self.path_cfg = path_cfg
         self.load_config(path_cfg)
 
-    def load_config(self, path_cfg: Union[Path, None] = None):
+    def load_config(self, path_cfg: Path | None = None):
         if path_cfg is None:
             path_cwd = Path(os.getcwd())
             path_cfg = path_cwd / "pyomd-config.yaml"
@@ -29,7 +28,7 @@ class Config:
         self.cfg = cfg
 
     @classmethod
-    def create_config_file(cls, path_cfg: Union[Path, None] = None):
+    def create_config_file(cls, path_cfg: Path | None = None):
         if path_cfg is None:
             path_cwd = Path(os.getcwd())
             path_cfg = path_cwd / "pyomd-config.yaml"
