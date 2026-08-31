@@ -1,7 +1,7 @@
 import inspect
 from functools import partial
 from pathlib import Path
-from typing import Callable, Type, Union
+from typing import Callable, Union
 
 import pytest
 
@@ -89,7 +89,7 @@ def t_parse(test_id: str, data: dict, debug: bool = False) -> None:
     _, expected_output, d_n, d_t, MetaClass = prep_test_data(test_id, data, name_f)
 
     if "exception" in expected_output:
-        exception: Type[Exception] = globals()[expected_output["exception"]]
+        exception: type[Exception] = globals()[expected_output["exception"]]
         with pytest.raises(exception):
             MetaClass._parse(d_n["content"])
     else:
