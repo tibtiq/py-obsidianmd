@@ -5,7 +5,7 @@ import re
 from collections.abc import Callable
 from pathlib import Path
 
-from src.pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
+from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
 
 from .exceptions import (
     InvalidFrontmatterError,

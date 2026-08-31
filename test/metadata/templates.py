@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from src.pyomd.metadata import (
+from pyomd.metadata import (
     InlineMetadata,
     MetadataType,
     NoteMetadata,

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.pyomd.metadata import MetadataType
+from pyomd.metadata import MetadataType
 
 from ..test_utils import load_data
 from .templates import (

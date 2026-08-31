@@ -7,7 +7,7 @@ from string import Template
 PATH_TEST_DATA = Path(__file__).parent / "0-test-data"
 PATH_TEST_NOTES = PATH_TEST_DATA / "notes"
 
-from src.pyomd.metadata import MetadataType, Order
+from pyomd.metadata import MetadataType, Order
 
 
 def load_test_notes(path_test_notes: Path | None) -> dict:

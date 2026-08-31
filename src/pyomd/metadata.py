@@ -13,13 +13,13 @@ from typing import TYPE_CHECKING
 
 import frontmatter
 
-from src.pyomd.config import CONFIG
+from pyomd.config import CONFIG
 
 from .exceptions import ArgTypeError, InvalidFrontmatterError
 from .misc import Order
 
 if TYPE_CHECKING:
-    from src.pyomd.note import Note
+    from pyomd.note import Note
 
 UserInput = str | int | float
 MetaValues = list[str] | None
