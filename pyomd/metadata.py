@@ -5,10 +5,11 @@ from __future__ import annotations
 import datetime
 import re
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from enum import Enum
 from pathlib import Path
 from string import Template
-from typing import TYPE_CHECKING, Callable, Union
+from typing import TYPE_CHECKING, Union
 
 import frontmatter
 
