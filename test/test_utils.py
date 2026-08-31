@@ -3,7 +3,6 @@ import json
 import os
 from pathlib import Path
 from string import Template
-from typing import Union
 
 PATH_TEST_DATA = Path(__file__).parent / "0-test-data"
 PATH_TEST_NOTES = PATH_TEST_DATA / "notes"
