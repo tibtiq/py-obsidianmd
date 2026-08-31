@@ -8,6 +8,9 @@ dependencies = [
     "python-frontmatter>=1.3.0",
 ]
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [dependency-groups]
 dev = [
     "icecream>=2.2.0",
