@@ -7,7 +7,12 @@ from pathlib import Path
 
 from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
 
-from .exceptions import NoteCreationError, ParsingNoteMetadataError, UpdateContentError
+from .exceptions import (
+    InvalidFrontmatterError,
+    NoteCreationError,
+    ParsingNoteMetadataError,
+    UpdateContentError,
+)
 
 
 class Note:
@@ -117,7 +122,12 @@ class Note:
                 inline_inplace=inline_inplace,
                 inline_tml=inline_tml,
             )
-        except Exception as e:
+        except (
+            NotImplementedError,
+            InvalidFrontmatterError,
+            ValueError,
+            KeyError,
+        ) as e:
             raise UpdateContentError(path=self.path, exception=e)
         if write:
             self.write()
