@@ -5,14 +5,13 @@ import re
 from collections.abc import Callable
 from pathlib import Path
 
-from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
-
-from .exceptions import (
+from pyomd.exceptions import (
     InvalidFrontmatterError,
     NoteCreationError,
     ParsingNoteMetadataError,
     UpdateContentError,
 )
+from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
 
 
 class Note:

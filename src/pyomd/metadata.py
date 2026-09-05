@@ -14,9 +14,8 @@ from typing import TYPE_CHECKING
 import frontmatter
 
 from pyomd.config import CONFIG
-
-from .exceptions import ArgTypeError, InvalidFrontmatterError
-from .misc import Order
+from pyomd.exceptions import ArgTypeError, InvalidFrontmatterError
+from pyomd.misc import Order
 
 if TYPE_CHECKING:
     from pyomd.note import Note
