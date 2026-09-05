@@ -18,4 +18,8 @@ dev = [
 ]
 
 [tool.pyright]
-ignore = ["test"]
+exclude = [
+    ".venv",
+    "tests",
+    "build"
+]
