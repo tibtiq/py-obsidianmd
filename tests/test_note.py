@@ -147,3 +147,27 @@ class TestNotes:
 
             notes = Notes(tmp_path, False)
             assert len(notes) == 2
+
+    class TestAppend:
+        def test_append(self, tmp_path, make_markdown_file):
+            make_markdown_file("", filename="note1.md")
+            make_markdown_file("", filename="note2.md")
+            notes = Notes(tmp_path)
+
+            new_content = "new_content"
+            notes.append(new_content, False)
+
+            for note in notes.notes:
+                assert note.content == f"\n{new_content}"
+
+        def test_allow_repeat(self, tmp_path, make_markdown_file):
+            file_content = "file_content"
+            make_markdown_file(file_content, filename="note1.md")
+            make_markdown_file(file_content, filename="note2.md")
+            notes = Notes(tmp_path)
+
+            new_content = "file_content"
+            notes.append(new_content, True)
+
+            for note in notes.notes:
+                assert note.content == f"{file_content}\n{file_content}"
