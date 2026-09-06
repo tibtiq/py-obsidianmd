@@ -7,7 +7,6 @@ from pathlib import Path
 
 from pyomd.exceptions import (
     InvalidFrontmatterError,
-    NoteCreationError,
     ParsingNoteMetadataError,
     UpdateContentError,
 )
@@ -33,11 +32,8 @@ class Note:
             path: path to the markdown note.
         """
         self.path: Path = Path(path)
-        try:
-            with open(self.path, "r") as f:
-                self.content: str = f.read()
-        except Exception as e:
-            raise NoteCreationError(path=path, exception=e) from e
+        with open(self.path, "r") as f:
+            self.content: str = f.read()
 
         try:
             self.metadata: NoteMetadata = NoteMetadata(self.content)
