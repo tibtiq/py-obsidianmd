@@ -13,6 +13,13 @@ class TestNote:
 
         Note(temp_file)
 
+    def test_repr(self, tmp_path):
+        temp_file = tmp_path / "note1.md"
+        temp_file.write_text("")
+
+        note = Note(temp_file)
+        assert note == eval(repr(note))
+
     def test_eq(self, tmp_path):
         temp_file = tmp_path / "note1.md"
         temp_file.write_text("")
