@@ -20,23 +20,24 @@ class TestNote:
         note = Note(temp_file)
         assert note == eval(repr(note))
 
-    def test_eq(self, tmp_path):
-        temp_file = tmp_path / "note1.md"
-        temp_file.write_text("")
-        note1 = Note(temp_file)
+    class TestEQ:
+        def test_eq(self, tmp_path):
+            temp_file = tmp_path / "note1.md"
+            temp_file.write_text("")
+            note1 = Note(temp_file)
 
-        temp_file = tmp_path / "note1.md"
-        temp_file.write_text("")
-        note2 = Note(temp_file)
+            temp_file = tmp_path / "note1.md"
+            temp_file.write_text("")
+            note2 = Note(temp_file)
 
-        assert note1 == note2
+            assert note1 == note2
 
-    def test_eq_not_instance(self, tmp_path):
-        temp_file = tmp_path / "note1.md"
-        temp_file.write_text("")
-        note = Note(temp_file)
+        def test_not_same_instance(self, tmp_path):
+            temp_file = tmp_path / "note1.md"
+            temp_file.write_text("")
+            note = Note(temp_file)
 
-        assert note != 1
+            assert note != 1
 
 
 class TestNotes:
