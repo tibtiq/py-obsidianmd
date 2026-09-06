@@ -141,7 +141,8 @@ class Note:
             f.write(self.content)
 
     @staticmethod
-    def _is_md_file(path: Path):
+    def _is_md_file(path: Path | str):
+        path = Path(path)
         exist = path.exists()
         is_md = path.suffix == ".md"
         return exist and is_md
