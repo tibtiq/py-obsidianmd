@@ -172,6 +172,40 @@ class TestNotes:
             for note in notes.notes:
                 assert note.content == f"{file_content}\n{file_content}"
 
+    class TestFilter:
+        def test_starts_with(self, tmp_path, make_markdown_file):
+            make_markdown_file("", filename="note1.md")
+            flagged_note_path = make_markdown_file("", filename="flagged_note2.md")
+            notes = Notes(tmp_path)
+            assert len(notes) == 2
+
+            notes.filter(starts_with="flagged")
+            assert len(notes) == 1
+            assert notes.notes[0].path == flagged_note_path
+
+        def test_ends_with(self, tmp_path, make_markdown_file):
+            make_markdown_file("", filename="note1.md")
+            flagged_note_path = make_markdown_file("", filename="note2_flagged.md")
+            notes = Notes(tmp_path)
+            assert len(notes) == 2
+
+            notes.filter(ends_with="flagged.md")
+            assert len(notes) == 1
+            assert notes.notes[0].path == flagged_note_path
+
+        def test_pattern(self, tmp_path, make_markdown_file):
+            make_markdown_file("", filename="note1.md")
+            flagged_note_path = make_markdown_file("", filename="note2_flagged.md")
+            notes = Notes(tmp_path)
+            assert len(notes) == 2
+
+            notes.filter(pattern=r"(.*)_(.*)")
+            assert len(notes) == 1
+            assert notes.notes[0].path == flagged_note_path
+
+        # def test_has_meta(self, tmp_path, make_markdown_file):
+        #     pass
+
     def test_write(self, tmp_path, make_markdown_file):
         make_markdown_file("", filename="note1.md")
         make_markdown_file("", filename="note2.md")
