@@ -69,7 +69,7 @@ class TestNote:
         def test_regex(self, make_markdown_file):
             file_content = "file_content"
             note = Note(make_markdown_file(content=file_content))
-            ic(note.content)
+
             note.sub(r"(.*)_", "new_", True)
             assert note.content == "new_content"
 
