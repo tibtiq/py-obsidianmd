@@ -34,6 +34,28 @@ class TestNote:
 
             assert note != 1
 
+    class TestAppend:
+        def test_append(self, make_markdown_file):
+            temp_file = make_markdown_file(content="")
+            note = Note(temp_file)
+
+            new_content = "new_content"
+
+            note.append(new_content, False)
+            assert note.content == f"\n{new_content}"
+
+            note.append(new_content, False)
+            assert note.content == f"\n{new_content}"
+
+        def test_allow_repeat(self, make_markdown_file):
+            temp_file = make_markdown_file(content="new_content")
+            note = Note(temp_file)
+
+            new_content = "new_content"
+
+            note.append(new_content, True)
+            assert note.content == "new_content\nnew_content"
+
 
 class TestNotes:
     def test_init_single(self, make_markdown_file):
