@@ -86,6 +86,15 @@ class TestNote:
 
         assert f"\n{new_content}" == f"{file_content}"
 
+    def test_is_md_file(self, make_markdown_file):
+        note_path = make_markdown_file("", filename="note.md")
+        assert Note._is_md_file(note_path)
+
+        assert not Note._is_md_file("not_note.md")
+
+        note_path = make_markdown_file("", filename="not_note.txt")
+        assert not Note._is_md_file(note_path)
+
 
 class TestNotes:
     def test_init_single(self, make_markdown_file):
