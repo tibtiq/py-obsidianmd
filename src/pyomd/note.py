@@ -190,7 +190,6 @@ class Notes:
         if isinstance(paths, Path):
             paths = [paths]
         for pth in paths:
-            assert pth.exists(), f"file or folder doesn't exist: '{pth}'"
             if pth.is_dir():
                 for root, _, fls in os.walk(pth):
                     for f_name in fls:
