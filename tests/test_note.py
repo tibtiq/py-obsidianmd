@@ -73,6 +73,19 @@ class TestNote:
             note.sub(r"(.*)_", "new_", True)
             assert note.content == "new_content"
 
+    def test_write(self, make_markdown_file):
+        note_path = make_markdown_file(content="")
+        note = Note(note_path)
+        new_content = "file_content"
+        note.append(new_content, True)
+
+        note.write()
+
+        with open(note_path) as file:
+            file_content = file.read()
+
+        assert f"\n{new_content}" == f"{file_content}"
+
 
 class TestNotes:
     def test_init_single(self, make_markdown_file):
