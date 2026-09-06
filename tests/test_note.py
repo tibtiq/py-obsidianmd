@@ -97,18 +97,19 @@ class TestNote:
 
 
 class TestNotes:
-    def test_init_single(self, make_markdown_file):
-        temp_file = make_markdown_file(content="")
+    class TestsInit:
+        def test_single(self, make_markdown_file):
+            temp_file = make_markdown_file(content="")
 
-        Note(temp_file)
+            Note(temp_file)
 
-    def test_init_dir(self, tmp_path, make_markdown_file):
-        make_markdown_file("", filename="note1.md")
-        notes = Notes(tmp_path)
+        def test_dir(self, tmp_path, make_markdown_file):
+            make_markdown_file("", filename="note1.md")
+            notes = Notes(tmp_path)
 
-        assert len(notes) == 1
+            assert len(notes) == 1
 
-        make_markdown_file("", filename="note2.md")
-        notes = Notes(tmp_path)
+            make_markdown_file("", filename="note2.md")
+            notes = Notes(tmp_path)
 
-        assert len(notes) == 2
+            assert len(notes) == 2
