@@ -1,3 +1,5 @@
+import pathlib
+
 from icecream import ic
 
 ic.configureOutput(includeContext=True)
@@ -112,4 +114,36 @@ class TestNotes:
             make_markdown_file("", filename="note2.md")
             notes = Notes(tmp_path)
 
+            assert len(notes) == 2
+
+    class TestAdd:
+        def test_add_file(self, tmp_path, make_markdown_file):
+            make_markdown_file("", filename="note1.md")
+            notes = Notes(tmp_path)
+            assert len(notes) == 1
+
+            note_path = make_markdown_file("", filename="note2.md")
+            notes.add(note_path)
+            assert len(notes) == 2
+
+        def test_add_dir_recursive(self, tmp_path, make_markdown_file):
+            notes = Notes(tmp_path)
+            assert len(notes) == 0
+
+            make_markdown_file("", filename="note1.md")
+            make_markdown_file("", filename="note2.md")
+            notes.add(tmp_path, True)
+            assert len(notes) == 2
+
+        def test_add_dir_not_recursive(self, tmp_path, make_markdown_file):
+            notes = Notes(tmp_path)
+            assert len(notes) == 0
+
+            make_markdown_file("", filename="note1.md")
+            make_markdown_file("", filename="note2.md")
+            file_path = tmp_path / "nested_dir" / "note3.md"
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            file_path.write_text("", encoding="utf-8")
+
+            notes = Notes(tmp_path, False)
             assert len(notes) == 2
