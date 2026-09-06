@@ -47,13 +47,12 @@ class TestNote:
             assert note.content == f"\n{new_content}"
 
         def test_allow_repeat(self, make_markdown_file):
-            temp_file = make_markdown_file(content="new_content")
+            file_content = "file_content"
+            temp_file = make_markdown_file(content=file_content)
             note = Note(temp_file)
 
-            new_content = "new_content"
-
-            note.append(new_content, True)
-            assert note.content == "new_content\nnew_content"
+            note.append("file_content", True)
+            assert note.content == f"{file_content}\n{file_content}"
 
     def test_print(self, capsys, make_markdown_file):
         file_content = "file_content"
