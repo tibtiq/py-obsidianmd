@@ -6,55 +6,48 @@ from pyomd.note import Note, Notes
 
 
 class TestNote:
-    def test_init(self, tmp_path):
-        temp_file = tmp_path / "note1.md"
-        temp_file.write_text("")
+    def test_init(self, make_markdown_file):
+        temp_file = make_markdown_file(content="")
 
         Note(temp_file)
 
-    def test_repr(self, tmp_path):
-        temp_file = tmp_path / "note1.md"
+    def test_repr(self, make_markdown_file):
+        temp_file = make_markdown_file(content="")
         temp_file.write_text("")
 
         note = Note(temp_file)
         assert note == eval(repr(note))
 
     class TestEQ:
-        def test_eq(self, tmp_path):
-            temp_file = tmp_path / "note1.md"
-            temp_file.write_text("")
+        def test_eq(self, make_markdown_file):
+            temp_file = make_markdown_file(content="")
             note1 = Note(temp_file)
 
-            temp_file = tmp_path / "note1.md"
-            temp_file.write_text("")
+            temp_file = make_markdown_file(content="")
             note2 = Note(temp_file)
 
             assert note1 == note2
 
-        def test_not_same_instance(self, tmp_path):
-            temp_file = tmp_path / "note1.md"
-            temp_file.write_text("")
+        def test_not_same_instance(self, make_markdown_file):
+            temp_file = make_markdown_file(content="")
             note = Note(temp_file)
 
             assert note != 1
 
 
 class TestNotes:
-    def test_init_single(self, tmp_path):
-        temp_file = tmp_path / "note1.md"
-        temp_file.write_text("")
+    def test_init_single(self, make_markdown_file):
+        temp_file = make_markdown_file(content="")
 
         Note(temp_file)
 
-    def test_init_dir(self, tmp_path):
-        temp_file = tmp_path / "note1.md"
-        temp_file.write_text("")
-
+    def test_init_dir(self, tmp_path, make_markdown_file):
+        make_markdown_file("", filename="note1.md")
         notes = Notes(tmp_path)
+
         assert len(notes) == 1
 
-        temp_file = tmp_path / "note2.md"
-        temp_file.write_text("")
-
+        make_markdown_file("", filename="note2.md")
         notes = Notes(tmp_path)
+
         assert len(notes) == 2
