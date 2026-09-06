@@ -187,6 +187,7 @@ class Notes:
                 When given a path to a directory, whether to add notes
                 from sub-directories too
         """
+        # todo update this function to not add duplicates
         if isinstance(paths, Path):
             paths = [paths]
         for pth in paths:
