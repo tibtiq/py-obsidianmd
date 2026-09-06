@@ -40,7 +40,6 @@ class TestNote:
             note = Note(temp_file)
 
             new_content = "new_content"
-
             note.append(new_content, False)
             assert note.content == f"\n{new_content}"
 
