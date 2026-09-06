@@ -20,11 +20,8 @@ class TestNote:
 
     class TestEQ:
         def test_eq(self, make_markdown_file):
-            temp_file = make_markdown_file(content="")
-            note1 = Note(temp_file)
-
-            temp_file = make_markdown_file(content="")
-            note2 = Note(temp_file)
+            note1 = Note(make_markdown_file(content=""))
+            note2 = Note(make_markdown_file(content=""))
 
             assert note1 == note2
 
@@ -36,8 +33,7 @@ class TestNote:
 
     class TestAppend:
         def test_append(self, make_markdown_file):
-            temp_file = make_markdown_file(content="")
-            note = Note(temp_file)
+            note = Note(make_markdown_file(content=""))
 
             new_content = "new_content"
             note.append(new_content, False)
@@ -48,16 +44,14 @@ class TestNote:
 
         def test_allow_repeat(self, make_markdown_file):
             file_content = "file_content"
-            temp_file = make_markdown_file(content=file_content)
-            note = Note(temp_file)
+            note = Note(make_markdown_file(content=file_content))
 
             note.append("file_content", True)
             assert note.content == f"{file_content}\n{file_content}"
 
     def test_print(self, capsys, make_markdown_file):
         file_content = "file_content"
-        temp_file = make_markdown_file(content=file_content)
-        note = Note(temp_file)
+        note = Note(make_markdown_file(content=file_content))
 
         note.print()
         captured = capsys.readouterr()
