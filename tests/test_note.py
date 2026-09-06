@@ -58,6 +58,21 @@ class TestNote:
 
         assert captured.out == f"{file_content}\n"
 
+    class TestSub:
+        def test_regular(self, make_markdown_file):
+            file_content = "file_content"
+            note = Note(make_markdown_file(content=file_content))
+
+            note.sub(file_content, "new_content")
+            assert note.content == "new_content"
+
+        def test_regex(self, make_markdown_file):
+            file_content = "file_content"
+            note = Note(make_markdown_file(content=file_content))
+            ic(note.content)
+            note.sub(r"(.*)_", "new_", True)
+            assert note.content == "new_content"
+
 
 class TestNotes:
     def test_init_single(self, make_markdown_file):
