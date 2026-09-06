@@ -39,6 +39,12 @@ class Note:
     def __repr__(self) -> str:
         return f'Note("{self.path}")'
 
+    def __eq__(self, other):
+        if not isinstance(other, Note):
+            return NotImplemented
+
+        return self.path == other.path
+
     def append(self, str_append: str, allow_repeat: bool = False):
         """Appends text to the note content.
 

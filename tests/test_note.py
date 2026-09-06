@@ -13,6 +13,24 @@ class TestNote:
 
         Note(temp_file)
 
+    def test_eq(self, tmp_path):
+        temp_file = tmp_path / "note1.md"
+        temp_file.write_text("")
+        note1 = Note(temp_file)
+
+        temp_file = tmp_path / "note1.md"
+        temp_file.write_text("")
+        note2 = Note(temp_file)
+
+        assert note1 == note2
+
+    def test_eq_not_instance(self, tmp_path):
+        temp_file = tmp_path / "note1.md"
+        temp_file.write_text("")
+        note = Note(temp_file)
+
+        assert note != 1
+
 
 class TestNotes:
     def test_init_single(self, tmp_path):
