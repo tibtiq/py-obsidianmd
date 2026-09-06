@@ -171,3 +171,19 @@ class TestNotes:
 
             for note in notes.notes:
                 assert note.content == f"{file_content}\n{file_content}"
+
+    def test_write(self, tmp_path, make_markdown_file):
+        make_markdown_file("", filename="note1.md")
+        make_markdown_file("", filename="note2.md")
+        notes = Notes(tmp_path)
+
+        new_content = "file_content"
+        notes.append(new_content, True)
+
+        notes.write()
+
+        for note in notes.notes:
+            with open(note.path) as file:
+                file_content = file.read()
+
+            assert f"\n{new_content}" == f"{file_content}"
