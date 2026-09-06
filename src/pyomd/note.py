@@ -37,7 +37,7 @@ class Note:
         self.metadata: NoteMetadata = NoteMetadata(self.content)
 
     def __repr__(self) -> str:
-        return f'Note (path: "{self.path}")\n'
+        return f'Note("{self.path}")'
 
     def append(self, str_append: str, allow_repeat: bool = False):
         """Appends text to the note content.
