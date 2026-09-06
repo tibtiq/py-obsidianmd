@@ -3,7 +3,7 @@ import pathlib
 from icecream import ic
 
 ic.configureOutput(includeContext=True)
-
+from pyomd.metadata import MetadataType
 from pyomd.note import Note, Notes
 
 
@@ -203,8 +203,22 @@ class TestNotes:
             assert len(notes) == 1
             assert notes.notes[0].path == flagged_note_path
 
-        # def test_has_meta(self, tmp_path, make_markdown_file):
-        #     pass
+        def test_has_meta(self, tmp_path, make_markdown_file):
+            make_markdown_file("", filename="note1.md")
+            # fmt: off
+            flagged_note_path = make_markdown_file((
+                "---\n"
+                "tags:\n"
+                "- project\n"
+                "---\n"
+            ), filename="note2.md")
+            # fmt: on
+            notes = Notes(tmp_path)
+            assert len(notes) == 2
+
+            notes.filter(has_meta=[("tags", "project", MetadataType.FRONTMATTER)])
+            assert len(notes) == 1
+            assert notes.notes[0].path == flagged_note_path
 
     def test_write(self, tmp_path, make_markdown_file):
         make_markdown_file("", filename="note1.md")
