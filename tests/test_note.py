@@ -56,6 +56,16 @@ class TestNote:
             note.append(new_content, True)
             assert note.content == "new_content\nnew_content"
 
+    def test_print(self, capsys, make_markdown_file):
+        file_content = "file_content"
+        temp_file = make_markdown_file(content=file_content)
+        note = Note(temp_file)
+
+        note.print()
+        captured = capsys.readouterr()
+
+        assert captured.out == f"{file_content}\n"
+
 
 class TestNotes:
     def test_init_single(self, make_markdown_file):
