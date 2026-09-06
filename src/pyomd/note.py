@@ -7,7 +7,6 @@ from pathlib import Path
 
 from pyomd.exceptions import (
     InvalidFrontmatterError,
-    ParsingNoteMetadataError,
     UpdateContentError,
 )
 from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
@@ -35,10 +34,7 @@ class Note:
         with open(self.path, "r") as f:
             self.content: str = f.read()
 
-        try:
-            self.metadata: NoteMetadata = NoteMetadata(self.content)
-        except Exception as e:
-            raise ParsingNoteMetadataError(path=path, exception=e) from e
+        self.metadata: NoteMetadata = NoteMetadata(self.content)
 
     def __repr__(self) -> str:
         return f'Note (path: "{self.path}")\n'
