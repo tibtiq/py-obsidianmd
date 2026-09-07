@@ -2,13 +2,8 @@
 
 import os
 import re
-from collections.abc import Callable
 from pathlib import Path
 
-from pyomd.exceptions import (
-    InvalidFrontmatterError,
-    UpdateContentError,
-)
 from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
 
 
@@ -76,58 +71,6 @@ class Note:
         if not is_regex:
             pattern = re.escape(pattern)
         self.content = re.sub(pattern, replace, self.content)
-
-    def update_content(
-        self,
-        inline_position: str = "bottom",
-        inline_inplace: bool = True,
-        inline_tml: str | Callable = "standard",
-        write: bool = False,
-    ):
-        """Updates the note's content.
-
-        Args:
-            inline_position:
-                if "bottom" / "top", inline metadata is grouped at the bottom/top of the note.
-                This is always the case for new inline metadata (that didn't exist in the
-                previous note content).
-            inline_inplace:
-                By default it is True, which means the inline metadata position in the note
-                is not modified. If False, the metadata is grouped according to `inline_how`
-            inline_tml:
-                Which template to use to update inline metadata content.
-                Current possible values: ["standard", "callout"]
-                Defaults to "standard": each metadata field is written on a newline.
-                "callout": metadata fields are regrouped inside a callout:
-                    > [!info]- metadata
-                    > key1 :: values1
-                    > key2 :: values2
-                    ...
-                NOTE: In later updates it will be possible to pass a function specifying how
-                to display the metadata, for greater customization.
-            write:
-                Write changes to the file on disk after updating the content.
-                If write = False, the user needs to call Note.write() subsequently to write
-                changes to disk, otherwise only the self.content attribute is modified
-                (in memory, but not on disk).
-        """
-
-        try:
-            self.content = self.metadata._update_content(
-                self.content,
-                inline_position=inline_position,
-                inline_inplace=inline_inplace,
-                inline_tml=inline_tml,
-            )
-        except (
-            NotImplementedError,
-            InvalidFrontmatterError,
-            ValueError,
-            KeyError,
-        ) as e:
-            raise UpdateContentError(path=self.path, exception=e)
-        if write:
-            self.write()
 
     def write(self, path: Path | None = None):
         """Writes the note's content to disk.
@@ -249,25 +192,6 @@ class Notes:
                         inc = False
                 include.append(inc)
             self.notes = [n for (n, inc) in zip(self.notes, include) if inc]
-
-    def update_content(
-        self,
-        inline_position: str = "bottom",
-        inline_inplace: bool = True,
-        inline_tml: str | Callable = "standard",
-        write: bool = False,
-    ):
-        """Updates the content of all notes.
-
-        See `Note.update_content` for argument details.
-        """
-        for note in self.notes:
-            note.update_content(
-                inline_position=inline_position,
-                inline_inplace=inline_inplace,
-                inline_tml=inline_tml,
-                write=write,
-            )
 
     def write(self):
         """Writes the note's content to disk.
