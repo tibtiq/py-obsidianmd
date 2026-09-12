@@ -60,6 +60,13 @@ class DummyMetadata(Metadata):
 
 
 class TestMetadata:
+    def test_metadata_repr(self):
+        meta = DummyMetadata("tags: python, pytest")
+
+        repr_str = repr(meta)
+
+        assert "DummyMetadata" in repr_str
+        assert "python, pytest" in repr_str
 
     def test_metadata_remove_empty(self):
         meta = DummyMetadata("tags: python\nempty1:\nempty2:")
