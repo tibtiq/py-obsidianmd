@@ -4,18 +4,12 @@ from pyomd.metadata import MetadataType
 
 
 class TestMetadataType:
-    @pytest.mark.parametrize(
-        "value, expected",
-        [
-            (None, MetadataType.ALL),
-            ("frontmatter", MetadataType.FRONTMATTER),
-            ("inline", MetadataType.INLINE),
-            ("notemeta", MetadataType.ALL),
-            ("default", MetadataType.DEFAULT),
-        ],
-    )
-    def test_supported_value(self, value, expected):
-        assert MetadataType.get_from_str(value) == expected
+    def test_supported_value(self):
+        assert MetadataType.get_from_str(None) == MetadataType.ALL
+        assert MetadataType.get_from_str("frontmatter") == MetadataType.FRONTMATTER
+        assert MetadataType.get_from_str("inline") == MetadataType.INLINE
+        assert MetadataType.get_from_str("notemeta") == MetadataType.ALL
+        assert MetadataType.get_from_str("default") == MetadataType.DEFAULT
 
     def test_unsupported_value(self):
         with pytest.raises(ValueError):
