@@ -87,6 +87,31 @@ class TestMetadata:
             assert not self.meta.has("tags", [])
 
 
+    class Test_remove:
+        @pytest.fixture(autouse=True)
+        def setup_method(self):
+            self.meta = DummyMetadata("tags: python, pytest, java")
+
+        def test_nonexisting_key(self):
+            self.meta.remove("missing")
+
+            assert self.meta.has("tags", ["python", "pytest", "java"])
+
+        def test_single_item(self):
+            self.meta.remove("tags", "pytest")
+
+            assert self.meta.get("tags") == ["python", "java"]
+
+        def test_list_of_values(self):
+            self.meta.remove("tags", ["python", "java"])
+
+            assert self.meta.has("tags", ["pytest"])
+
+        def test_remove_key(self):
+            self.meta.remove("tags")
+
+            assert not self.meta.has("tags")
+
     def test_metadata_remove_empty(self):
         meta = DummyMetadata("tags: python\nempty1:\nempty2:")
         assert len(meta.metadata) == 3
