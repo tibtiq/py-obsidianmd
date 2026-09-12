@@ -61,6 +61,17 @@ class DummyMetadata(Metadata):
 
 class TestMetadata:
 
+    def test_metadata_remove_empty(self):
+        meta = DummyMetadata("tags: python\nempty1:\nempty2:")
+        assert len(meta.metadata) == 3
+
+        meta.remove_empty()
+
+        assert len(meta.metadata) == 1
+        assert "tags" in meta.metadata
+        assert "empty1" not in meta.metadata
+        assert "empty2" not in meta.metadata
+
     class Test_remove_duplicate_values:
         @pytest.fixture(autouse=True)
         def setup_method(self):
