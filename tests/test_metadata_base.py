@@ -1,6 +1,9 @@
 import pytest
+from icecream import ic
 
 from pyomd.metadata import MetadataType
+
+ic.configureOutput(includeContext=True)
 
 
 class TestMetadataType:
