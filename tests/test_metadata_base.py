@@ -57,3 +57,40 @@ class DummyMetadata(Metadata):
     @classmethod
     def _erase(cls, note_content: str) -> str:
         return ""
+
+
+class TestMetadata:
+
+    class Test_remove_duplicate_values:
+        @pytest.fixture(autouse=True)
+        def setup_method(self):
+            self.meta = DummyMetadata("")
+            self.meta.metadata = {
+                "k1": ["a", "b", "a", "c", "b"],
+                "k2": ["x", "x", "y"],
+            }
+
+        def test_key_has_duplicates_values(self):
+            self.meta.remove_duplicate_values("k1")
+            assert self.meta.get("k1") == ["a", "b", "c"]
+            assert self.meta.get("k2") == ["x", "x", "y"]
+
+        def test_multiple_keys_have_duplicates_values(self):
+            self.meta.remove_duplicate_values(["k1", "k2"])
+            assert self.meta.get("k1") == ["a", "b", "c"]
+            assert self.meta.get("k2") == ["x", "y"]
+
+        def test_remove_all_duplicates(self):
+            self.meta.remove_duplicate_values()
+            assert self.meta.get("k1") == ["a", "b", "c"]
+            assert self.meta.get("k2") == ["x", "y"]
+
+        def test_key_not_in_metadata(self):
+            self.meta.remove_duplicate_values(["k3"])
+            assert self.meta.get("k1") == ["a", "b", "a", "c", "b"]
+            assert self.meta.get("k2") == ["x", "x", "y"]
+
+        def test_invalid_key(self):
+            with pytest.raises(ArgTypeError):
+                self.meta.remove_duplicate_values(123)  # type: ignore
+
