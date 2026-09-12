@@ -56,12 +56,9 @@ class Metadata(ABC):
 
     def __repr__(self):
         rpr = f"{type(self)}:\n"
-        if self.to_string() is None:
-            rpr += " None"
-        else:
-            for k, v in self.metadata.items():
-                if isinstance(v, list):
-                    rpr += "".join([f"- {k}: {', '.join(v)}\n"])
+        for k, v in self.metadata.items():
+            if isinstance(v, list):
+                rpr += "".join([f"- {k}: {', '.join(v)}\n"])
         return rpr
 
     @abstractmethod
