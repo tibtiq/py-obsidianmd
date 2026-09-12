@@ -68,6 +68,24 @@ class TestMetadata:
         assert "DummyMetadata" in repr_str
         assert "python, pytest" in repr_str
 
+    class Test_has:
+        @pytest.fixture(autouse=True)
+        def setup_method(self):
+            self.meta = DummyMetadata("tags: python, pytest\nempty_key:")
+
+        def test_keys(self):
+            assert self.meta.has("tags") is True
+            assert self.meta.has("missing") is False
+
+        def test_keys_and_values(self):
+            assert self.meta.has("tags", "python") is True
+            assert self.meta.has("tags", ["python", "pytest"]) is True
+            assert self.meta.has("tags", ["python", "missing"]) is False
+
+        def test_key_with_no_values(self):
+            assert self.meta.has("empty_key", []) is True
+            assert self.meta.has("tags", []) is False
+
     def test_metadata_remove_empty(self):
         meta = DummyMetadata("tags: python\nempty1:\nempty2:")
         assert len(meta.metadata) == 3
