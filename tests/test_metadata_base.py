@@ -74,17 +74,18 @@ class TestMetadata:
             self.meta = DummyMetadata("tags: python, pytest\nempty_key:")
 
         def test_keys(self):
-            assert self.meta.has("tags") is True
-            assert self.meta.has("missing") is False
+            assert self.meta.has("tags")
+            assert not self.meta.has("missing")
 
         def test_keys_and_values(self):
-            assert self.meta.has("tags", "python") is True
-            assert self.meta.has("tags", ["python", "pytest"]) is True
-            assert self.meta.has("tags", ["python", "missing"]) is False
+            assert self.meta.has("tags", "python")
+            assert self.meta.has("tags", ["python", "pytest"])
+            assert not self.meta.has("tags", ["python", "missing"])
 
         def test_key_with_no_values(self):
-            assert self.meta.has("empty_key", []) is True
-            assert self.meta.has("tags", []) is False
+            assert self.meta.has("empty_key", [])
+            assert not self.meta.has("tags", [])
+
 
     def test_metadata_remove_empty(self):
         meta = DummyMetadata("tags: python\nempty1:\nempty2:")
