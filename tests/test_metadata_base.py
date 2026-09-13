@@ -200,3 +200,32 @@ class TestMetadata:
             with pytest.raises(ArgTypeError):
                 self.meta.remove_duplicate_values(123)  # type: ignore
 
+    class Test_order_values:
+        @pytest.fixture(autouse=True)
+        def setup_method(self):
+            self.meta = DummyMetadata("")
+            self.meta.metadata = {
+                "letters": ["b", "c", "a"],
+                "more_letters": ["f", "e", "g"],
+            }
+
+        def test_multiple_keys(self):
+            self.meta.order_values(None, how=Order.ASC)
+
+            assert self.meta.get("letters") == ["a", "b", "c"]
+            assert self.meta.get("more_letters") == ["e", "f", "g"]
+
+        def test_ascending(self):
+            self.meta.order_values("letters", how=Order.ASC)
+
+            assert self.meta.get("letters") == ["a", "b", "c"]
+
+        def test_decending(self):
+            self.meta.order_values("letters", how=Order.DESC)
+
+            assert self.meta.get("letters") == ["c", "b", "a"]
+
+        def test_invalid_how(self):
+            with pytest.raises(ArgTypeError):
+                self.meta.order_values("letters", how="invalid")  # type: ignore
+
