@@ -86,6 +86,50 @@ class TestMetadata:
             assert self.meta.has("empty_key", [])
             assert not self.meta.has("tags", [])
 
+    class Test_add:
+        @pytest.fixture(autouse=True)
+        def setup_method(self):
+            self.meta = DummyMetadata("tags: python")
+
+        def test_single_element(self):
+            assert len(self.meta.metadata) == 1
+
+            self.meta.add("tags", "pytest")
+
+            assert len(self.meta.metadata) == 1
+            assert self.meta.get("tags") == ["python", "pytest"]
+
+        def test_duplicate_value(self):
+            assert len(self.meta.metadata) == 1
+
+            self.meta.add("tags", "pytest", allow_duplicates=False)
+
+            assert len(self.meta.metadata) == 1
+            assert self.meta.get("tags") == ["python", "pytest"]
+
+            self.meta.add("tags", "pytest", allow_duplicates=True)
+
+            assert len(self.meta.metadata) == 1
+            assert self.meta.get("tags") == ["python", "pytest", "pytest"]
+
+        def test_overwrite(self):
+            self.meta.add("tags", ["java", "c++"], overwrite=True)
+
+            assert len(self.meta.metadata) == 1
+            assert self.meta.get("tags") == ["java", "c++"]
+
+        def test_numerical_value(self):
+            self.meta.add("count", 42)
+            self.meta.add("ratio", 3.14)
+
+            assert len(self.meta.metadata) == 3
+            assert self.meta.get("count") == ["42"]
+            assert self.meta.get("ratio") == ["3.14"]
+
+        def test_empty_key(self):
+            self.meta.add("empty", None)
+
+            assert self.meta.get("empty") == []
 
     class Test_remove:
         @pytest.fixture(autouse=True)
