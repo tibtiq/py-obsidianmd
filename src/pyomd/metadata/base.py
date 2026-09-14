@@ -246,8 +246,7 @@ class Metadata(ABC):
     @abstractmethod
     def parse(
         self, note_content: str, parse_fn: ParseFunction | None = None
-    ) -> MetaDict:
-        pass
+    ) -> MetaDict: ...
 
     @staticmethod
     def _parse_special_fields(metadata: MetaDict, meta_type: MetadataType) -> MetaDict:
