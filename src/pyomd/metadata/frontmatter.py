@@ -71,13 +71,12 @@ class Frontmatter(Metadata):
 
         return is_valid
 
-    @classmethod
-    def _parse(
-        cls, note_content: str, parse_fn: ParseFunction | None = None
+    def parse(
+        self, note_content: str, parse_fn: ParseFunction | None = None
     ) -> MetaDict:
         """Parse note content to extract metadata dictionary."""
         if parse_fn is None:
-            parse_fn = cls._parse_1
+            parse_fn = self._parse_1
         return parse_fn(note_content)
 
     @classmethod

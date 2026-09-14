@@ -52,7 +52,7 @@ class Metadata(ABC):
     """Common attributes and methods for all types of metadata."""
 
     def __init__(self, note_content: str):
-        self.metadata: MetaDict = self._parse(note_content)
+        self.metadata: MetaDict = self.parse(note_content)
 
     def __repr__(self):
         rpr = f"{type(self)}:\n"
@@ -243,10 +243,9 @@ class Metadata(ABC):
     @abstractmethod
     def _update_content(self, note_content: str) -> str: ...
 
-    @classmethod
     @abstractmethod
-    def _parse(
-        cls, note_content: str, parse_fn: ParseFunction | None = None
+    def parse(
+        self, note_content: str, parse_fn: ParseFunction | None = None
     ) -> MetaDict:
         pass
 

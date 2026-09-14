@@ -36,8 +36,7 @@ class DummyMetadata(Metadata):
     def _update_content(self, note_content: str) -> str:
         return note_content
 
-    @classmethod
-    def _parse(cls, note_content: str, parse_fn=None) -> MetaDict:
+    def parse(self, note_content: str, parse_fn=None) -> MetaDict:
         if note_content == "INVALID":
             raise InvalidFrontmatterError("Invalid frontmatter")
         if not note_content.strip():
