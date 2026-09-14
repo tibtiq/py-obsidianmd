@@ -291,3 +291,7 @@ class TestMetadata:
 
         assert "tags: python, pytest\n" in captured.out
 
+    def test_metadata_exists(self):
+        assert DummyMetadata._exists("tags: python")
+        assert not DummyMetadata._exists("")
+        assert not DummyMetadata._exists("INVALID")
