@@ -283,3 +283,11 @@ class TestMetadata:
             assert self.meta.get("a") == ["x", "y"]
             assert self.meta.get("z") == ["a", "b"]
 
+    def test_metadata_print(self, capsys):
+        meta = DummyMetadata("tags: python, pytest")
+
+        meta.print()
+        captured = capsys.readouterr()
+
+        assert "tags: python, pytest\n" in captured.out
+
