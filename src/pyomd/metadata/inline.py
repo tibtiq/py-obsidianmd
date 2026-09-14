@@ -76,7 +76,7 @@ class InlineMetadata(Metadata):
         if inplace:
             nc, ignore_k = self._update_content_inplace(note_content=note_content)
         else:
-            nc, ignore_k = self._erase(note_content), None
+            nc, ignore_k = self.erase(note_content), None
         sep = self._get_sep_newlines(nc, position=position)
         if position == "top":
             new_nc = self.to_string(ignore_k=ignore_k, tml=tml) + sep + nc
@@ -126,13 +126,11 @@ class InlineMetadata(Metadata):
         )
         return metadata
 
-    @classmethod
-    def _erase(cls, note_content: str) -> str:
-
+    def erase(self, note_content: str) -> str:
         keep: list[str] = []
         for l in note_content.split("\n"):
-            b_match = re.search(cls.REGEX, l) is not None
-            b_match_enclosed = re.search(cls.REGEX_ENCLOSED, l) is not None
+            b_match = re.search(self.REGEX, l) is not None
+            b_match_enclosed = re.search(self.REGEX_ENCLOSED, l) is not None
             if b_match and not b_match_enclosed:
                 continue
             keep.append(l)

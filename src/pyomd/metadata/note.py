@@ -366,7 +366,7 @@ class NoteMetadata:
         inline_tml: str | Callable = "standard",
     ) -> str:
         """Update the note's metadata (frontmatter and inline)"""
-        str_no_fm = self.frontmatter._erase(note_content)
+        str_no_fm = self.frontmatter.erase(note_content)
         res = self.inline._update_content(
             str_no_fm, position=inline_position, inplace=inline_inplace, tml=inline_tml
         )

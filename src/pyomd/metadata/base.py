@@ -262,8 +262,3 @@ class Metadata(ABC):
                     tmp = sep.join(metadata[k])
                     metadata[k] = [t.strip() for t in tmp.split(sep) if t.strip() != ""]
         return metadata
-
-    @classmethod
-    @abstractmethod
-    def _erase(cls, note_content: str) -> str:
-        pass

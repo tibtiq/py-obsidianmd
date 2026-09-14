@@ -54,7 +54,7 @@ class Frontmatter(Metadata):
             note_content:
                 The note content
         """
-        content_no_meta = self._erase(note_content)
+        content_no_meta = self.erase(note_content)
         res = self.to_string() + content_no_meta
         return res
 
@@ -137,7 +137,6 @@ class Frontmatter(Metadata):
 
         return metadata
 
-    @classmethod
-    def _erase(cls, note_content: str) -> str:
+    def erase(self, note_content: str) -> str:
         r: str = frontmatter.loads(note_content).content
         return r
