@@ -228,7 +228,7 @@ class Metadata(ABC):
         o_values: Order | None = Order.ASC,
     ):
         """Orders metadata keys and values.
-2
+
         See `NoteMetadata.order` for argument description
         """
         if o_keys is not None:
