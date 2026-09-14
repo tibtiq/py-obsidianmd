@@ -229,3 +229,33 @@ class TestMetadata:
             with pytest.raises(ArgTypeError):
                 self.meta.order_values("letters", how="invalid")  # type: ignore
 
+    class Test_order_keys:
+        @pytest.fixture(autouse=True)
+        def setup_method(self):
+            self.meta = DummyMetadata("")
+            self.meta.metadata = {"z": ["1"], "a": ["2"], "m": ["3"]}
+
+        def test_no_keys(self):
+            self.meta.metadata = {}
+            assert len(self.meta.metadata) == 0
+
+            self.meta.order_keys(how=Order.ASC)
+
+            assert len(self.meta.metadata) == 0
+
+        def test_ascending(self):
+            self.meta.order_keys(how=Order.ASC)
+
+            assert list(self.meta.metadata.keys()) == ["a", "m", "z"]
+            assert self.meta.has("a", ["2"])
+            assert self.meta.has("m", ["3"])
+            assert self.meta.has("z", ["1"])
+
+        def test_descending(self):
+            self.meta.order_keys(how=Order.DESC)
+
+            assert list(self.meta.metadata.keys()) == ["z", "m", "a"]
+            assert self.meta.has("a", ["2"])
+            assert self.meta.has("m", ["3"])
+            assert self.meta.has("z", ["1"])
+
