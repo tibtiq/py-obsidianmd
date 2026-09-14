@@ -4,6 +4,7 @@ from icecream import ic
 from pyomd.exceptions import ArgTypeError, InvalidFrontmatterError
 from pyomd.metadata import Metadata, MetadataType
 from pyomd.metadata.base import MetaDict
+from pyomd.misc import Order
 
 ic.configureOutput(includeContext=True)
 
