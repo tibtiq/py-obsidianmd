@@ -259,3 +259,27 @@ class TestMetadata:
             assert self.meta.has("m", ["3"])
             assert self.meta.has("z", ["1"])
 
+    class Test_order:
+        @pytest.fixture(autouse=True)
+        def setup_method(self):
+            self.meta = DummyMetadata("")
+            self.meta.metadata = {"z": ["b", "a"], "a": ["y", "x"]}
+
+        def test_nones(self):
+            self.meta.order(o_keys=None, o_values=None)
+
+            assert list(self.meta.metadata.keys()) == ["z", "a"]
+            assert self.meta.get("a") == ["y", "x"]
+            assert self.meta.get("z") == ["b", "a"]
+
+        def test_ascending(self):
+            self.meta.order(o_keys=Order.ASC, o_values=None)
+            assert list(self.meta.metadata.keys()) == ["a", "z"]
+            assert self.meta.get("a") == ["y", "x"]
+            assert self.meta.get("z") == ["b", "a"]
+
+            self.meta.order(o_keys=None, o_values=Order.ASC)
+            assert list(self.meta.metadata.keys()) == ["a", "z"]
+            assert self.meta.get("a") == ["x", "y"]
+            assert self.meta.get("z") == ["a", "b"]
+
