@@ -60,6 +60,14 @@ class DummyMetadata(Metadata):
 
 
 class TestMetadata:
+    def test_metadata_init_and_get(self):
+        content = "tags: python, pytest\nauthor: alice"
+        meta = DummyMetadata(content)
+
+        assert meta.get("tags") == ["python", "pytest"]
+        assert meta.get("author") == ["alice"]
+        assert meta.get("nonexistent") is None
+
     def test_metadata_repr(self):
         meta = DummyMetadata("tags: python, pytest")
 
