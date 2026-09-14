@@ -267,12 +267,3 @@ class Metadata(ABC):
     @abstractmethod
     def _erase(cls, note_content: str) -> str:
         pass
-
-    @classmethod
-    def _exists(cls, note_content: str) -> bool:
-        """Checks if the metadata type is present in the note"""
-        try:
-            meta_dict = cls._parse(note_content)
-        except InvalidFrontmatterError:
-            meta_dict = {}
-        return len(meta_dict) > 0
