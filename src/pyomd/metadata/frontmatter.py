@@ -110,33 +110,6 @@ class Frontmatter(Metadata):
         )
         return meta_dict
 
-    @classmethod
-    def _parse_2(cls, note_content: str) -> MetaDict:
-        """Parse frontmatter metadata using regex"""
-        mtc = re.search(cls.REGEX, note_content)
-        if mtc is None:
-            ext_str = []
-        fm_str = mtc.group()
-        ext_str = [fm_str]
-
-        # convert extracted string to dictionary
-        metadata: MetaDict = {}
-        if len(ext_str) == 0:
-            return {}
-        ms = ext_str[0]
-        elements = ms.split("\n")
-        for e in elements:
-            if ":" not in e:
-                continue
-            k, v = e.split(":", maxsplit=1)
-            c = [v.strip()] if "," not in v else [x.strip() for x in v.split(",")]
-            metadata[k.strip()] = c
-        if "tags" in metadata:
-            mtags = " ".join(metadata["tags"])
-            metadata["tags"] = [t.strip() for t in mtags.split(" ") if t.strip() != ""]
-
-        return metadata
-
     def erase(self, note_content: str) -> str:
         r: str = frontmatter.loads(note_content).content
         return r
