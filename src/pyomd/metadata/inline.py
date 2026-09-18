@@ -102,7 +102,7 @@ class InlineMetadata(Metadata):
         Uses the python-frontmatter library.
         """
 
-        matches: list[re.Match] = {}
+        matches: list[re.Match] = []
         for l in note_content.split("\n"):
             m = cls.REGEX.search(l)
             b = m is not None
