@@ -243,7 +243,6 @@ class InlineMetadata(Metadata):
         # update fields still in metadata dictionary
         updated_fields: set[str] = set()
         for key in self.metadata:
-            # print(f'this is key: "{key}"')
             new_v = ", ".join(self.metadata[key])
             regex_field = re.compile(self.TMP_REGEX.substitute(key=f"{key} *"))
             for m in regex_field.finditer(note_content):
