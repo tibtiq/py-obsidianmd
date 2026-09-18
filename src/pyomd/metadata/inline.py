@@ -249,7 +249,7 @@ class InlineMetadata(Metadata):
                 updated_fields.add(key)
                 beg = m.group("beg")
                 k = m.group("key")
-                rep = f"{beg}{k.strip()} :: {new_v}"
+                rep = f"{beg}{k.strip()}:: {new_v}"
                 note_content = regex_field.sub(rep, note_content)
 
         return (note_content, updated_fields)
