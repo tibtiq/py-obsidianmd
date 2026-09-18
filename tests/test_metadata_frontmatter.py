@@ -59,6 +59,14 @@ class TestFrontmatter:
             with pytest.raises(InvalidFrontmatterError):
                 meta.parse(content)
 
+        def test_none_value(self):
+            content = "---\ntitle: Test\nempty_field:\n---\nBody content"
+            meta = Frontmatter("")
+            parsed = meta.parse(content)
+
+            assert parsed["title"] == ["Test"]
+            assert parsed["empty_field"] == []
+
     def test_erase_frontmatter(self):
         content = "---\ntitle: Note\n---\nThis is the content."
         meta = Frontmatter("")
