@@ -195,9 +195,7 @@ class InlineMetadata(Metadata):
         return s
 
     @staticmethod
-    def _get_span_redundant_keys(
-        s: str, r: re.Pattern, r_enc: re.Pattern, debug: bool = False
-    ) -> SpanList:
+    def _get_span_redundant_keys(s: str, r: re.Pattern, r_enc: re.Pattern) -> SpanList:
         """Returns spans for inline metadata which keys appear earlier in the file content."""
         found_keys: set[str] = set()
         spans_del: SpanList = []
@@ -205,16 +203,11 @@ class InlineMetadata(Metadata):
             if r_enc.match(m.group()):
                 continue
             k = m.group(2).strip()
-            if debug:
-                print(f'"{k}"')
             if k in found_keys:
                 spans_del.append(m.span())
-                if debug:
-                    print(f'to delete: "{m.group()}"')
             else:
                 found_keys.add(k)
-                if debug:
-                    print(f"keep: {m.group()}")
+
         return spans_del
 
     def _update_content_inplace(self, note_content: str) -> tuple[str, set[str]]:
