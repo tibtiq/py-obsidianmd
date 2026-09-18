@@ -1,8 +1,10 @@
 import pathlib
 
+import pytest
 from icecream import ic
 
 ic.configureOutput(includeContext=True)
+from pyomd.exceptions import UpdateContentError
 from pyomd.metadata import MetadataType
 from pyomd.note import Note, Notes
 
@@ -87,6 +89,26 @@ class TestNote:
             file_content = file.read()
 
         assert f"\n{new_content}" == f"{file_content}"
+
+    def test_write_custom_path(self, make_markdown_file, tmp_path):
+        note_path = make_markdown_file(content="initial")
+        note = Note(note_path)
+        custom_path = tmp_path / "custom_output.md"
+
+        note.write(custom_path)
+
+        assert custom_path.read_text() == "initial"
+
+    def test_update_content_raises_update_content_error(self, make_markdown_file):
+        content = "Some content"
+        note_path = make_markdown_file(content)
+        note = Note(note_path)
+        note.metadata._update_content = lambda *args, **kwargs: (_ for _ in ()).throw(
+            NotImplementedError()
+        )
+
+        with pytest.raises(UpdateContentError):
+            note.update_content(write=False)
 
     def test_is_md_file(self, make_markdown_file):
         note_path = make_markdown_file("", filename="note.md")
@@ -235,3 +257,12 @@ class TestNotes:
                 file_content = file.read()
 
             assert f"\n{new_content}" == f"{file_content}"
+
+    def test_notes_update_content(self, tmp_path, make_markdown_file):
+        make_markdown_file("author:: Alice", filename="note1.md")
+        notes = Notes(tmp_path)
+
+        notes.update_content(inline_position="bottom", inline_inplace=True, write=True)
+
+        for note in notes.notes:
+            assert "author:: Alice" in note.content
