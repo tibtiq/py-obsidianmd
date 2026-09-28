@@ -5,7 +5,7 @@ from collections.abc import Callable
 from enum import Enum
 
 from pyomd.config import CONFIG
-from pyomd.exceptions import ArgTypeError, InvalidFrontmatterError
+from pyomd.exceptions import ArgTypeError
 from pyomd.misc import Order
 
 UserInput = str | int | float
