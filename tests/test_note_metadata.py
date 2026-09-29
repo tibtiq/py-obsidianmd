@@ -327,7 +327,6 @@ class TestNoteMetadata:
                 k=None, how=Order.ASC, meta_type=MetadataType.ALL
             )
 
-            ic(note_metadata.frontmatter.metadata)
             assert note_metadata.frontmatter.metadata["tags:"] == ["a", "b"]
             assert note_metadata.inline.metadata["other"] == ["[d", "c]"]
 
