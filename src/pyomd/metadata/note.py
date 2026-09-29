@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+from pyomd import Note
 from pyomd.config import CONFIG
 from pyomd.exceptions import ArgTypeError
 from pyomd.metadata import Frontmatter, InlineMetadata, Metadata, MetadataType
