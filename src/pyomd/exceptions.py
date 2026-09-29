@@ -13,26 +13,6 @@ class InvalidFrontmatterError(Exception):
         super().__init__(self.msg)
 
 
-class ParsingNoteMetadataError(Exception):
-    """Error while parsing a note's metadata."""
-
-    def __init__(self, path: Path | str, exception: Exception):
-        self.path = path
-        self.exception = exception
-        self.msg = f'Error while parsing metadata for note at path: "{self.path}". Exception:\n{self.exception}'
-        super().__init__(self.msg)
-
-
-class NoteCreationError(Exception):
-    """Error while creating a note object."""
-
-    def __init__(self, path: Path | str, exception: Exception):
-        self.path = path
-        self.exception = exception
-        self.msg = f'Error while creating Note object for path: "{self.path}". Exception:\n{self.exception}'
-        super().__init__(self.msg)
-
-
 class UpdateContentError(Exception):
     """Error when updating the content of a note."""
 

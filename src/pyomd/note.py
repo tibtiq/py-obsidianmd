@@ -7,8 +7,6 @@ from pathlib import Path
 
 from pyomd.exceptions import (
     InvalidFrontmatterError,
-    NoteCreationError,
-    ParsingNoteMetadataError,
     UpdateContentError,
 )
 from pyomd.metadata import MetadataType, NoteMetadata, NoteMetadataBatch
@@ -33,19 +31,19 @@ class Note:
             path: path to the markdown note.
         """
         self.path: Path = Path(path)
-        try:
-            with open(self.path, "r") as f:
-                self.content: str = f.read()
-        except Exception as e:
-            raise NoteCreationError(path=path, exception=e) from e
+        with open(self.path, "r") as f:
+            self.content: str = f.read()
 
-        try:
-            self.metadata: NoteMetadata = NoteMetadata(self.content)
-        except Exception as e:
-            raise ParsingNoteMetadataError(path=path, exception=e) from e
+        self.metadata: NoteMetadata = NoteMetadata(self.content)
 
     def __repr__(self) -> str:
-        return f'Note (path: "{self.path}")\n'
+        return f'Note("{self.path}")'
+
+    def __eq__(self, other):
+        if not isinstance(other, Note):
+            return NotImplemented
+
+        return self.path == other.path
 
     def append(self, str_append: str, allow_repeat: bool = False):
         """Appends text to the note content.
@@ -143,7 +141,8 @@ class Note:
             f.write(self.content)
 
     @staticmethod
-    def _is_md_file(path: Path):
+    def _is_md_file(path: Path | str):
+        path = Path(path)
         exist = path.exists()
         is_md = path.suffix == ".md"
         return exist and is_md
@@ -188,10 +187,10 @@ class Notes:
                 When given a path to a directory, whether to add notes
                 from sub-directories too
         """
+        # todo update this function to not add duplicates
         if isinstance(paths, Path):
             paths = [paths]
         for pth in paths:
-            assert pth.exists(), f"file or folder doesn't exist: '{pth}'"
             if pth.is_dir():
                 for root, _, fls in os.walk(pth):
                     for f_name in fls:

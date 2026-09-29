@@ -11,11 +11,23 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.uv]
+package = true
+
+[tool.pytest.ini_options]
+addopts = "--cov=pyomd --cov-report=term-missing --cov-report=html"
+
 [dependency-groups]
 dev = [
     "icecream>=2.2.0",
     "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pytest-mock>=3.15.1",
 ]
 
 [tool.pyright]
-ignore = ["test"]
+exclude = [
+    ".venv",
+    "tests",
+    "build"
+]

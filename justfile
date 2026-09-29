@@ -24,15 +24,17 @@ lint:
 type:
     uv run pyright .
 
-# # run tests
-# alias tests := test
-# test target="": sync
-#     #!/bin/bash
-#     set -euo pipefail
-#     IFS=$'\n\t'
-#     target="{{ target }}"
-#     if [ -z "$target" ]; then
-#         uv run pytest -s ./tests
-#     else
-#         uv run pytest -s "$target"
-#     fi
+# run tests
+
+alias tests := test
+
+test target="": sync
+    #!/bin/bash
+    set -euo pipefail
+    IFS=$'\n\t'
+    target="{{ target }}"
+    if [ -z "$target" ]; then
+        uv run pytest -s ./tests
+    else
+        uv run pytest -s "$target"
+    fi
