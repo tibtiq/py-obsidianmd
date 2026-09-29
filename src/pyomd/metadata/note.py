@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import TYPE_CHECKING
 
 from pyomd.config import CONFIG
 from pyomd.exceptions import ArgTypeError
