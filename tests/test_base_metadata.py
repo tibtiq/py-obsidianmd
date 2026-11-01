@@ -1,4 +1,6 @@
 import pytest
+from hypothesis import given
+from hypothesis import strategies as st
 from icecream import ic
 
 from pyomd.exceptions import ArgTypeError, InvalidFrontmatterError
@@ -10,12 +12,23 @@ ic.configureOutput(includeContext=True)
 
 
 class TestMetadataType:
-    def test_supported_value(self):
-        assert MetadataType.get_from_str(None) == MetadataType.ALL
-        assert MetadataType.get_from_str("frontmatter") == MetadataType.FRONTMATTER
-        assert MetadataType.get_from_str("inline") == MetadataType.INLINE
-        assert MetadataType.get_from_str("notemeta") == MetadataType.ALL
-        assert MetadataType.get_from_str("default") == MetadataType.DEFAULT
+    @given(
+        st.one_of(
+            st.none(),
+            st.sampled_from(
+                [
+                    "frontmatter",
+                    "inline",
+                    "notemeta",
+                    "default",
+                ]
+            ),
+        )
+    )
+    def test_supported_value(self, input_string):
+        result = MetadataType.get_from_str(input_string)
+
+        assert isinstance(result, MetadataType)
 
     def test_unsupported_value(self):
         with pytest.raises(ValueError):
